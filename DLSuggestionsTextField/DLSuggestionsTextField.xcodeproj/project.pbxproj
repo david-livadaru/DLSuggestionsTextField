@@ -1,0 +1,322 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		630DC9C41D3013BC00F28B00 /* DLSuggestionsTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		630DC9D71D30149B00F28B00 /* SuggestionsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */; };
+		630DC9D91D30152A00F28B00 /* SuggestionTextViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */; };
+		630DC9DB1D30160300F28B00 /* SuggestionsContentViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */; };
+		630DC9DD1D30171E00F28B00 /* SuggestionsContentViewTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */; };
+		630DC9DF1D30174A00F28B00 /* KeyboardAnimationTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */; };
+		630DC9E11D30238700F28B00 /* UIViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9E01D30238700F28B00 /* UIViewType.swift */; };
+		630DC9E61D302EC500F28B00 /* CGGeometry+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		630DC9C01D3013BC00F28B00 /* DLSuggestionsTextField.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLSuggestionsTextField.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLSuggestionsTextField.h; sourceTree = "<group>"; };
+		630DC9C51D3013BC00F28B00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsTextField.swift; sourceTree = "<group>"; };
+		630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTextViewType.swift; sourceTree = "<group>"; };
+		630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsContentViewType.swift; sourceTree = "<group>"; };
+		630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsContentViewTraits.swift; sourceTree = "<group>"; };
+		630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAnimationTraits.swift; sourceTree = "<group>"; };
+		630DC9E01D30238700F28B00 /* UIViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewType.swift; sourceTree = "<group>"; };
+		630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGGeometry+Additions.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		630DC9BC1D3013BC00F28B00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		630DC9B61D3013BC00F28B00 = {
+			isa = PBXGroup;
+			children = (
+				630DC9C21D3013BC00F28B00 /* DLSuggestionsTextField */,
+				630DC9C11D3013BC00F28B00 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		630DC9C11D3013BC00F28B00 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				630DC9C01D3013BC00F28B00 /* DLSuggestionsTextField.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		630DC9C21D3013BC00F28B00 /* DLSuggestionsTextField */ = {
+			isa = PBXGroup;
+			children = (
+				630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */,
+				630DC9C51D3013BC00F28B00 /* Info.plist */,
+				630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */,
+				630DC9E01D30238700F28B00 /* UIViewType.swift */,
+				630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */,
+				630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */,
+				630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */,
+				630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */,
+				630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */,
+			);
+			path = DLSuggestionsTextField;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		630DC9BD1D3013BC00F28B00 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				630DC9C41D3013BC00F28B00 /* DLSuggestionsTextField.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		630DC9BF1D3013BC00F28B00 /* DLSuggestionsTextField */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 630DC9C81D3013BC00F28B00 /* Build configuration list for PBXNativeTarget "DLSuggestionsTextField" */;
+			buildPhases = (
+				630DC9BB1D3013BC00F28B00 /* Sources */,
+				630DC9BC1D3013BC00F28B00 /* Frameworks */,
+				630DC9BD1D3013BC00F28B00 /* Headers */,
+				630DC9BE1D3013BC00F28B00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DLSuggestionsTextField;
+			productName = DLSuggestionsTextField;
+			productReference = 630DC9C01D3013BC00F28B00 /* DLSuggestionsTextField.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		630DC9B71D3013BC00F28B00 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Community;
+				TargetAttributes = {
+					630DC9BF1D3013BC00F28B00 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = MREYNA8ZMD;
+					};
+				};
+			};
+			buildConfigurationList = 630DC9BA1D3013BC00F28B00 /* Build configuration list for PBXProject "DLSuggestionsTextField" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 630DC9B61D3013BC00F28B00;
+			productRefGroup = 630DC9C11D3013BC00F28B00 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				630DC9BF1D3013BC00F28B00 /* DLSuggestionsTextField */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		630DC9BE1D3013BC00F28B00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		630DC9BB1D3013BC00F28B00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				630DC9DB1D30160300F28B00 /* SuggestionsContentViewType.swift in Sources */,
+				630DC9E61D302EC500F28B00 /* CGGeometry+Additions.swift in Sources */,
+				630DC9D91D30152A00F28B00 /* SuggestionTextViewType.swift in Sources */,
+				630DC9E11D30238700F28B00 /* UIViewType.swift in Sources */,
+				630DC9DD1D30171E00F28B00 /* SuggestionsContentViewTraits.swift in Sources */,
+				630DC9D71D30149B00F28B00 /* SuggestionsTextField.swift in Sources */,
+				630DC9DF1D30174A00F28B00 /* KeyboardAnimationTraits.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		630DC9C61D3013BC00F28B00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		630DC9C71D3013BC00F28B00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		630DC9C91D3013BC00F28B00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DLSuggestionsTextField/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = CM.DLSuggestionsTextField;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		630DC9CA1D3013BC00F28B00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DLSuggestionsTextField/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = CM.DLSuggestionsTextField;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		630DC9BA1D3013BC00F28B00 /* Build configuration list for PBXProject "DLSuggestionsTextField" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				630DC9C61D3013BC00F28B00 /* Debug */,
+				630DC9C71D3013BC00F28B00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		630DC9C81D3013BC00F28B00 /* Build configuration list for PBXNativeTarget "DLSuggestionsTextField" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				630DC9C91D3013BC00F28B00 /* Debug */,
+				630DC9CA1D3013BC00F28B00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 630DC9B71D3013BC00F28B00 /* Project object */;
+}
