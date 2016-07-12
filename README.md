@@ -41,10 +41,12 @@ The framework client is responsible to:
 A suggestions content view is a view where the list of suggestions is presented. May be an instance of UITableView or UICollectionView or any class that implements the ` SuggestionsContentViewType `.
 A text view is a view is a view which display the proposed suggestion based on user's input (the same way Google Search works).
 
+SuggestionsTextField was not created with generics because it would have been removed its use in Interface Builder files. The solution I chose is protocols; the drawback is that the framework client has to retain the view sent to the framework as data source or downcast where needed (which should be avoided).
+
 ### What's next?
 
-- [ ] Update Demo project with a few meaningful example.
-- [ ] Provide support for **Swift Package Manager**.
+- [ ] Update Demo project with a few meaningful examples. (ETA: early August)
+- [ ] Provide support for **Swift Package Manager**. (ETA: This fall with Swift 3 updates).
 
 ### Issues
 
