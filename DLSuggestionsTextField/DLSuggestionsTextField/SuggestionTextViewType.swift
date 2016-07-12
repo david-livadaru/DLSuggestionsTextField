@@ -10,7 +10,7 @@ import UIKit
 
 
 @objc public protocol SuggestionTextViewType : UIViewType {
-    var attributedText: NSAttributedString? { get }
+    var attributedText: NSAttributedString? { get set }
 }
 
 extension UILabel : SuggestionTextViewType {}

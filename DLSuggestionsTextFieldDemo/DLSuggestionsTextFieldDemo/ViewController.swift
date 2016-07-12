@@ -11,13 +11,22 @@ import DLSuggestionsTextField
 
 class ViewController: UIViewController {
     @IBOutlet weak var suggestionsTextField: SuggestionsTextField!
+    
+    var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        let textFieldFrame = suggestionsTextField.frame
+        tableView = UITableView(frame: CGRect(x: textFieldFrame.minX, y: textFieldFrame.maxY, width: textFieldFrame.width, height: 0))
+        tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: String(UITableViewCell))
+        
         suggestionsTextField.dataSource = self
         suggestionsTextField.configurationDelegate = self
+        suggestionsTextField.minEditingTextWidth = 8
         suggestionsTextField.prepareForDisplay()
     }
     
@@ -30,10 +39,6 @@ class ViewController: UIViewController {
 
 extension ViewController : SuggestionsTextFieldDataSource {
     func suggestionsTextFieldSuggestionsContentView(textField: SuggestionsTextField) -> SuggestionsContentViewType {
-        let tableView = UITableView()
-        tableView.dataSource = self
-        tableView.tableFooterView = UIView()
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: String(UITableViewCell))
         return tableView
     }
     
@@ -46,26 +51,47 @@ extension ViewController : SuggestionsTextFieldDataSource {
 }
 
 extension ViewController : SuggestionsTextFieldConfigurationDelegate {
-    func suggestionsTextField(textField: SuggestionsTextField,
-                              proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits,
-                              forSuggestionContentView contentView: SuggestionsContentViewType?) {
+    
+    func suggestionsTextField(textField: SuggestionsTextField, proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits, keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits) {
+        var hiddenContentViewFrame = contentViewTraits.frame
+        hiddenContentViewFrame.size.height = 0
         
+        tableView?.frame = hiddenContentViewFrame
+        UIView.animateWithDuration(keyboardAnimationTraits.duration, delay: 0,
+                                   options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
+                                   animations: {
+                                    self.tableView?.frame = contentViewTraits.frame
+        }, completion: nil)
+    }
+    
+    func suggestionsTextField(textField: SuggestionsTextField, keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits) {
+        var hiddenContentViewFrame = tableView.frame
+        hiddenContentViewFrame.size.height = 0
+        
+        UIView.animateWithDuration(keyboardAnimationTraits.duration, delay: 0,
+                                   options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
+                                   animations: {
+                                    textField.suggestionsContentView?.frame = hiddenContentViewFrame
+        }) { (finished) in
+            if keyboardAnimationTraits.isKeyboardHidden {
+                textField.hideSuggestionsContentView()
+            }
+        }
     }
     
     func suggestionsTextField(textField: SuggestionsTextField,
                               proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits,
-                              forSuggestionContentView contentView: SuggestionsContentViewType?,
                               keyboardAnimationTraits: KeyboardAnimationTraits) {
         var hiddenContentViewFrame = contentViewTraits.frame
         hiddenContentViewFrame.size.height = 0
         let initialTableViewFrame = keyboardAnimationTraits.isKeyboardHidden ? contentViewTraits.frame : hiddenContentViewFrame
         let finalTableViewFrame = keyboardAnimationTraits.isKeyboardHidden ? hiddenContentViewFrame : contentViewTraits.frame
         
-        contentView?.frame = initialTableViewFrame
+        tableView?.frame = initialTableViewFrame
         UIView.animateWithDuration(keyboardAnimationTraits.duration, delay: 0,
                                    options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
                                    animations: {
-                                    contentView?.frame = finalTableViewFrame
+                                    self.tableView?.frame = finalTableViewFrame
         }) { (finished) in
             if keyboardAnimationTraits.isKeyboardHidden {
                 textField.hideSuggestionsContentView()

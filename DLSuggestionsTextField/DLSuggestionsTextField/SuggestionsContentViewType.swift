@@ -10,7 +10,7 @@ import UIKit
 
 
 @objc public protocol SuggestionsContentViewType : UIViewType {
-    var contentSize: CGSize { get }
+    var contentSize: CGSize { get set }
     
     func reloadData()
     func layoutIfNeeded()
