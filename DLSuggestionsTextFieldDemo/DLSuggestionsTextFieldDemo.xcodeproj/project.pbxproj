@@ -14,6 +14,9 @@
 		630DC9AF1D30139000F28B00 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 630DC9AD1D30139000F28B00 /* LaunchScreen.storyboard */; };
 		630DC9D11D30140700F28B00 /* DLSuggestionsTextField.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 630DC9D01D3013CC00F28B00 /* DLSuggestionsTextField.framework */; };
 		630DC9D21D30140700F28B00 /* DLSuggestionsTextField.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 630DC9D01D3013CC00F28B00 /* DLSuggestionsTextField.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6386A5F41D5F3FFC0028A518 /* PhonesSuggestionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386A5F31D5F3FFC0028A518 /* PhonesSuggestionsHandler.swift */; };
+		6386A5F61D5F403E0028A518 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386A5F51D5F403E0028A518 /* Storage.swift */; };
+		6386A5F81D5F406C0028A518 /* Phone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386A5F71D5F406C0028A518 /* Phone.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +59,9 @@
 		630DC9AE1D30139000F28B00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		630DC9B01D30139000F28B00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		630DC9CB1D3013CC00F28B00 /* DLSuggestionsTextField.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DLSuggestionsTextField.xcodeproj; path = ../DLSuggestionsTextField/DLSuggestionsTextField.xcodeproj; sourceTree = "<group>"; };
+		6386A5F31D5F3FFC0028A518 /* PhonesSuggestionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonesSuggestionsHandler.swift; sourceTree = "<group>"; };
+		6386A5F51D5F403E0028A518 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		6386A5F71D5F406C0028A518 /* Phone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Phone.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +98,9 @@
 			children = (
 				630DC9A41D30139000F28B00 /* AppDelegate.swift */,
 				630DC9A61D30139000F28B00 /* ViewController.swift */,
+				6386A5F31D5F3FFC0028A518 /* PhonesSuggestionsHandler.swift */,
+				6386A5F51D5F403E0028A518 /* Storage.swift */,
+				6386A5F71D5F406C0028A518 /* Phone.swift */,
 				630DC9A81D30139000F28B00 /* Main.storyboard */,
 				630DC9AB1D30139000F28B00 /* Assets.xcassets */,
 				630DC9AD1D30139000F28B00 /* LaunchScreen.storyboard */,
@@ -197,7 +206,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6386A5F81D5F406C0028A518 /* Phone.swift in Sources */,
 				630DC9A71D30139000F28B00 /* ViewController.swift in Sources */,
+				6386A5F61D5F403E0028A518 /* Storage.swift in Sources */,
+				6386A5F41D5F3FFC0028A518 /* PhonesSuggestionsHandler.swift in Sources */,
 				630DC9A51D30139000F28B00 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

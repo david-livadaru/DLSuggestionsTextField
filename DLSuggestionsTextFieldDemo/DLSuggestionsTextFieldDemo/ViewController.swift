@@ -12,22 +12,47 @@ import DLSuggestionsTextField
 class ViewController: UIViewController {
     @IBOutlet weak var suggestionsTextField: SuggestionsTextField!
     
-    var tableView: UITableView!
+    private let suggestionsHandler = PhonesSuggestionsHandler()
+    private let suggestionsTableView = UITableView()
+    private let suggestionsLabel = UILabel()
+    
+    private var placeholderAttributes: [String : AnyObject] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let textFieldFrame = suggestionsTextField.frame
-        tableView = UITableView(frame: CGRect(x: textFieldFrame.minX, y: textFieldFrame.maxY, width: textFieldFrame.width, height: 0))
-        tableView.dataSource = self
-        tableView.tableFooterView = UIView()
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: String(UITableViewCell))
+        suggestionsTableView.hidden = true
+        view.addSubview(suggestionsTableView)
         
+        suggestionsTableView.dataSource = suggestionsHandler
+        suggestionsTableView.delegate = self
+        suggestionsTableView.tableFooterView = UIView()
+        
+        placeholderAttributes[NSFontAttributeName] = UIFont(name: "Arial", size: 14)
+        placeholderAttributes[NSForegroundColorAttributeName] = UIColor.lightGrayColor()
+        var textAttributes = placeholderAttributes
+        textAttributes[NSForegroundColorAttributeName] = UIColor.darkTextColor()
+        suggestionsTextField.defaultTextAttributes = textAttributes
+        suggestionsTextField.attributedPlaceholder = NSAttributedString(string: "Search for a phone",
+                                                                        attributes: placeholderAttributes)
         suggestionsTextField.dataSource = self
         suggestionsTextField.configurationDelegate = self
-        suggestionsTextField.minEditingTextWidth = 8
+        suggestionsTextField.suggestionTextSpacing = -3
         suggestionsTextField.prepareForDisplay()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    
+        var tableViewFrame = CGRect.zero
+        tableViewFrame.origin.x = suggestionsTextField.frame.minX
+        tableViewFrame.origin.y = suggestionsTextField.frame.maxY
+        tableViewFrame.size.width = suggestionsTextField.frame.width
+        tableViewFrame.size.height = view.bounds.height - suggestionsTextField.frame.maxY
+        suggestionsTableView.frame = tableViewFrame
+        tableViewFrame.size.height = 0
+        suggestionsTableView.frame = tableViewFrame
     }
     
     @IBAction func controllerViewTapped(sender: UITapGestureRecognizer) {
@@ -35,37 +60,81 @@ class ViewController: UIViewController {
             view.endEditing(true)
         }
     }
+    
+    // MARK: Private
+    
+    private func selectPhone(atIndex index: Int) {
+        guard index < suggestionsHandler.phones.count else { return }
+        
+        let phone = suggestionsHandler.phones[index]
+        suggestionsTextField.text = phone.name
+    }
+    
+    private func filterSuggestions(completion: (() -> Void)) {
+        suggestionsHandler.suggestionsTextFieldDidChangeText(suggestionsTextField, completion: {
+            var suggestionText = ""
+            if let phone = self.suggestionsHandler.phones.first,
+                let text = self.suggestionsTextField.text where phone.name.hasPrefix(text) {
+                let substringIndex = phone.name.startIndex.advancedBy(text.characters.count)
+                suggestionText = phone.name.substringFromIndex(substringIndex)
+                
+            }
+            self.suggestionsLabel.attributedText = NSAttributedString(string: suggestionText,
+                attributes: self.placeholderAttributes)
+            
+            completion()
+        })
+    }
+}
+
+extension ViewController : UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        suggestionsTextField.resignFirstResponder()
+        selectPhone(atIndex: indexPath.row)
+        
+        filterSuggestions { 
+            tableView.reloadData()
+        }
+    }
 }
 
 extension ViewController : SuggestionsTextFieldDataSource {
     func suggestionsTextFieldSuggestionsContentView(textField: SuggestionsTextField) -> SuggestionsContentViewType {
-        return tableView
+        return suggestionsTableView
     }
     
     func suggestionsTextFieldSuggestionTextView(textField: SuggestionsTextField) -> SuggestionTextViewType {
-        let label = UILabel()
-        label.text = "Label"
-        label.backgroundColor = UIColor.redColor()
-        return label
+        return suggestionsLabel
     }
 }
 
 extension ViewController : SuggestionsTextFieldConfigurationDelegate {
     
-    func suggestionsTextField(textField: SuggestionsTextField, proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits, keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits) {
-        var hiddenContentViewFrame = contentViewTraits.frame
+    func suggestionsTextField(textField: SuggestionsTextField,
+                              proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits,
+                              keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits) {
+        if suggestionsTableView.hidden {
+            suggestionsTableView.hidden = false
+        }
+        
+        var contentViewFrame = contentViewTraits.frame
+        contentViewFrame.size.height = keyboardAnimationTraits.frame.minY - self.suggestionsTextField.frame.maxY
+        
+        var hiddenContentViewFrame = contentViewFrame
         hiddenContentViewFrame.size.height = 0
         
-        tableView?.frame = hiddenContentViewFrame
+        suggestionsTableView.frame = hiddenContentViewFrame
         UIView.animateWithDuration(keyboardAnimationTraits.duration, delay: 0,
                                    options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
                                    animations: {
-                                    self.tableView?.frame = contentViewTraits.frame
+                                    self.suggestionsTableView.frame = contentViewFrame
         }, completion: nil)
     }
     
-    func suggestionsTextField(textField: SuggestionsTextField, keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits) {
-        var hiddenContentViewFrame = tableView.frame
+    func suggestionsTextField(textField: SuggestionsTextField,
+                              keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits) {
+        var hiddenContentViewFrame = suggestionsTableView.frame
         hiddenContentViewFrame.size.height = 0
         
         UIView.animateWithDuration(keyboardAnimationTraits.duration, delay: 0,
@@ -79,40 +148,17 @@ extension ViewController : SuggestionsTextFieldConfigurationDelegate {
         }
     }
     
-    func suggestionsTextField(textField: SuggestionsTextField,
-                              proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits,
-                              keyboardAnimationTraits: KeyboardAnimationTraits) {
-        var hiddenContentViewFrame = contentViewTraits.frame
-        hiddenContentViewFrame.size.height = 0
-        let initialTableViewFrame = keyboardAnimationTraits.isKeyboardHidden ? contentViewTraits.frame : hiddenContentViewFrame
-        let finalTableViewFrame = keyboardAnimationTraits.isKeyboardHidden ? hiddenContentViewFrame : contentViewTraits.frame
-        
-        tableView?.frame = initialTableViewFrame
-        UIView.animateWithDuration(keyboardAnimationTraits.duration, delay: 0,
-                                   options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
-                                   animations: {
-                                    self.tableView?.frame = finalTableViewFrame
-        }) { (finished) in
-            if keyboardAnimationTraits.isKeyboardHidden {
-                textField.hideSuggestionsContentView()
-            }
-        }
-    }
-    
     func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: () -> Void) {
-        print("Did change text: \(textField.text)")
+        filterSuggestions(completion)
     }
 }
 
-extension ViewController : UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(String(UITableViewCell), forIndexPath: indexPath)
-        cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.blueColor() : UIColor.grayColor()
-        return cell
+extension ViewController : UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if textField.text?.characters.count > 0 {
+            selectPhone(atIndex: 0)
+        }
+        return false
     }
 }
-

@@ -123,6 +123,12 @@ public class SuggestionsTextField: UITextField {
             setNeedsLayout()
         }
     }
+    /// The space between typing text and suggestion text
+    public var suggestionTextSpacing: CGFloat = 0 {
+        didSet {
+            setNeedsLayout()
+        }
+    }
     /// the minimum width required for text to be visible. Default is 10 points.
     public var minEditingTextWidth: CGFloat = 10 {
         didSet {
@@ -208,6 +214,27 @@ public class SuggestionsTextField: UITextField {
         return super.editingRectForBounds(bounds)
     }
     
+    public func suggestionsTextViewFrame(availableTextRect availableTextRect: CGRect,
+                                                           requiredTextRect: CGRect) -> CGRect {
+        var requiredLabelSize = suggestionTextView?.systemLayoutSizeFittingSize(availableTextRect.size) ?? CGSize.zero
+        requiredLabelSize.ceilInPlace()
+        
+        let availableWidth = max(0, availableTextRect.width - requiredTextRect.width)
+        
+        var labelWidth: CGFloat = 0
+        if suggestionTextView?.attributedText?.length > 0 {
+            labelWidth = max(minSuggestionTextWidth, availableWidth)
+        }
+        
+        var labelFrame = CGRect.zero
+        labelFrame.origin.x = min(requiredTextRect.width, availableTextRect.width - labelWidth) + suggestionTextSpacing
+        labelFrame.origin.y = floor((bounds.height - requiredLabelSize.height) / 2)
+        labelFrame.size.width = labelWidth
+        labelFrame.size.height = requiredLabelSize.height
+        
+        return labelFrame
+    }
+    
     // MARK: Override
     
     override public func textRectForBounds(bounds: CGRect) -> CGRect {
@@ -219,12 +246,9 @@ public class SuggestionsTextField: UITextField {
     
     public override func editingRectForBounds(bounds: CGRect) -> CGRect {
         var availableTextRect = super.editingRectForBounds(bounds)
-        
         availableTextRect.insetInPlace(textInsets)
         
         var textRect = availableTextRect
-        var requiredLabelSize = suggestionTextView?.systemLayoutSizeFittingSize(availableTextRect.size) ?? CGSize.zero
-        requiredLabelSize.ceilInPlace()
         
         var requiredTextRect = CGRect.zero
         if containsText {
@@ -238,17 +262,9 @@ public class SuggestionsTextField: UITextField {
             requiredTextRect.size.width += minEditingTextWidth
         }
         
-        let availableWidth = max(0, availableTextRect.width - requiredTextRect.width)
-        let labelWidth = max(minSuggestionTextWidth, availableWidth)
-        
         if let suggestionTextView = self.suggestionTextView where containsText {
-            var labelFrame = CGRect.zero
-            labelFrame.origin.x = availableTextRect.maxX - labelWidth
-            labelFrame.origin.y = floor((bounds.height - requiredLabelSize.height) / 2)
-            labelFrame.size.width = labelWidth
-            labelFrame.size.height = requiredLabelSize.height
-            
-            suggestionTextView.frame = labelFrame
+            suggestionTextView.frame = suggestionsTextViewFrame(availableTextRect: availableTextRect,
+                                                                requiredTextRect: requiredTextRect)
         }
         
         if containsText {
@@ -257,7 +273,9 @@ public class SuggestionsTextField: UITextField {
             hideSuggestionTextView()
         }
         
-        textRect.size.width -= labelWidth
+        if let suggestionTextView = self.suggestionTextView where containsText && suggestionTextView.frame.width != 0 {
+            textRect.size.width -= minSuggestionTextWidth + suggestionTextSpacing
+        }
         
         return textRect
     }
