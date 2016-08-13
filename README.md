@@ -8,7 +8,7 @@ Even if there are some frameworks which provide this facility, each of them have
 ### Installation
 
 Apple provides project in project setup and that's the way to use to framework. It's as easy as: drag&drop project file into your project/workspace and embed the framework. Xcode will do the rest. Also this setup removes the 'fat binary' issues.
-There won't ever be support for CocoaPods or Carthage. Sometime support for **Swift Package Manager** will be added.
+In the future support for **Swift Package Manager** will be added.
 
 
 ### Usages
@@ -45,8 +45,8 @@ SuggestionsTextField was not created with generics because it would have been re
 
 ### What's next?
 
-- [ ] Update Demo project with a few meaningful examples. (ETA: early August)
-- [ ] Provide support for **Swift Package Manager**. (ETA: This fall with Swift 3 updates).
+- [ ] Update Demo project with more examples. (ETA: This fall)
+- [ ] Provide support for **Swift Package Manager**. (ETA: This fall).
 
 ### Issues
 
