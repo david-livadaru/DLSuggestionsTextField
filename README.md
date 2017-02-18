@@ -45,8 +45,8 @@ SuggestionsTextField was not created with generics because it would have been re
 
 ### What's next?
 
-- [ ] Update Demo project with more examples. (ETA: This fall)
-- [ ] Provide support for **Swift Package Manager**. (ETA: This fall).
+- [ ] Update Demo project with more examples. (Coming soon.)
+- [ ] Provide support for **Swift Package Manager**. (Coming soon).
 
 ### Issues
 
