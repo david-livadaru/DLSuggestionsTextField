@@ -29,8 +29,11 @@ github "davidlivadaru/DLSuggestionsTextField" ~> 1.0
 
 ### CocoaPods
 
+For now URL needs to be specified.
+If you need to point to a specific version, use ```:tag => '1.0.0'``` where 1.0.0 is the version you want to use.
+
 ```
-pod 'DLSuggestionsTextField', '~> 1.0'
+pod 'DLSuggestionsTextField', :git => 'https://github.com/davidlivadaru/DLSuggestionsTextField.git'
 ```
 
 ### Usages
