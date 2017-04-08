@@ -12,14 +12,14 @@ class Storage {
     let phones: [Phone]
     
     init() {
-        let version3_1_3 = NSOperatingSystemVersion(majorVersion: 3, minorVersion: 1, patchVersion: 3)
+        let version3_1_3 = OperatingSystemVersion(majorVersion: 3, minorVersion: 1, patchVersion: 3)
         let iPhoneOS3 = OperatingSystem(name: "iPhone OS", version: version3_1_3)
-        let iOS4_2_1 = OperatingSystem(version: NSOperatingSystemVersion(majorVersion: 4, minorVersion: 2, patchVersion: 1))
-        let iOS6_1_6 = OperatingSystem(version: NSOperatingSystemVersion(majorVersion: 6, minorVersion: 1, patchVersion: 6))
-        let iOS7_1_2 = OperatingSystem(version: NSOperatingSystemVersion(majorVersion: 7, minorVersion: 1, patchVersion: 2))
-        let iOS9_3_4 = OperatingSystem(version: NSOperatingSystemVersion(majorVersion: 9, minorVersion: 3, patchVersion: 4))
+        let iOS4_2_1 = OperatingSystem(version: OperatingSystemVersion(majorVersion: 4, minorVersion: 2, patchVersion: 1))
+        let iOS6_1_6 = OperatingSystem(version: OperatingSystemVersion(majorVersion: 6, minorVersion: 1, patchVersion: 6))
+        let iOS7_1_2 = OperatingSystem(version: OperatingSystemVersion(majorVersion: 7, minorVersion: 1, patchVersion: 2))
+        let iOS9_3_4 = OperatingSystem(version: OperatingSystemVersion(majorVersion: 9, minorVersion: 3, patchVersion: 4))
         let iOS10Beta = OperatingSystem(name: "iOS 10 Beta",
-                                        version: NSOperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0))
+                                        version: OperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0))
         
         let iPhoneFirstGen = Phone(name: "iPhone (1st Gen)", lastestSupportedOS: iPhoneOS3, year: 2007)
         let iPhone3G = Phone(name: "iPhone 3G", lastestSupportedOS: iOS4_2_1, year: 2008)
