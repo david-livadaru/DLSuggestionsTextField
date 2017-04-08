@@ -36,10 +36,11 @@ class ViewController: UIViewController {
         suggestionsTextField.defaultTextAttributes = textAttributes
         suggestionsTextField.attributedPlaceholder = NSAttributedString(string: "Search for a phone",
                                                                         attributes: placeholderAttributes)
-        suggestionsTextField.dataSource = self
         suggestionsTextField.configurationDelegate = self
         suggestionsTextField.suggestionTextSpacing = -3
-        suggestionsTextField.prepareForDisplay()
+        
+        suggestionsTextField.setSuggestionTextView(textView: suggestionsLabel)
+        suggestionsTextField.setSuggestionsContentView(contentView: suggestionsTableView)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -96,16 +97,6 @@ extension ViewController : UITableViewDelegate {
         filterSuggestions { 
             tableView.reloadData()
         }
-    }
-}
-
-extension ViewController : SuggestionsTextFieldDataSource {
-    func suggestionsTextFieldSuggestionsContentView(textField: SuggestionsTextField) -> SuggestionsContentViewType {
-        return suggestionsTableView
-    }
-    
-    func suggestionsTextFieldSuggestionTextView(textField: SuggestionsTextField) -> SuggestionTextViewType {
-        return suggestionsLabel
     }
 }
 

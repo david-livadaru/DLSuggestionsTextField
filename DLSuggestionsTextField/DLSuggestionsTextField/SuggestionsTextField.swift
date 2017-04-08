@@ -8,7 +8,8 @@
 
 import UIKit
 
-@objc public protocol SuggestionsTextFieldConfigurationDelegate : class {
+// MARK: - SuggestionsTextFieldConfigurationDelegate
+@objc public protocol SuggestionsTextFieldConfigurationDelegate: class {
     /**
      Customization point after textField started editing.
      At this point, the suggestions content view should pe prepared for display and
@@ -76,29 +77,8 @@ import UIKit
                                                           completion: @escaping (Void) -> Void)
 }
 
-@objc public protocol SuggestionsTextFieldDataSource : class {
-    /**
-     Asks the data source to provide an instance of implemented SuggestionsContentViewType.
-     By default UITableView and UICollectionView implements SuggestionsContentViewType.
-     
-     - parameter textField: textField which called the data source.
-     
-     - returns: An instance of SuggestionsContentViewType.
-     */
-    @objc optional func suggestionsTextFieldSuggestionsContentView(textField: SuggestionsTextField) -> SuggestionsContentViewType
-    /**
-     Asks the data source to provide an instance of implemented SuggestionTextViewType.
-     By default UILabel implements SuggestionTextViewType.
-     
-     - parameter textField: textField which called the data source.
-     
-     - returns: An instance of SuggestionTextViewType.
-     */
-    @objc optional func suggestionsTextFieldSuggestionTextView(textField: SuggestionsTextField) -> SuggestionTextViewType
-}
-
-@IBDesignable
-open class SuggestionsTextField: UITextField {
+// MARK: - SuggestionsTextField
+@IBDesignable open class SuggestionsTextField: UITextField {
     /// Adjusts vertical text insets.
     @IBInspectable open var verticalTextInsets: CGPoint = CGPoint.zero {
         didSet {
@@ -114,8 +94,6 @@ open class SuggestionsTextField: UITextField {
     
     /// Delegate which is reponsible with content view management and configuration of SuggestionsTextField.
     weak open var configurationDelegate: SuggestionsTextFieldConfigurationDelegate?
-    /// Data source which provides a content view and optionally a text view for proposed suggestion.
-    weak open var dataSource: SuggestionsTextFieldDataSource?
     
     /// The minimum width required for suggestion text in order to be legible. Default is 24 points.
     open var minSuggestionTextWidth: CGFloat = 24 {
@@ -177,9 +155,18 @@ open class SuggestionsTextField: UITextField {
     
     // MARK: Public Interface
     
-    open func prepareForDisplay() {
-        suggestionTextView = dataSource?.suggestionsTextFieldSuggestionTextView?(textField: self)
-        suggestionsContentView = dataSource?.suggestionsTextFieldSuggestionsContentView?(textField: self)
+    /// Sets the view which will be used to display the selected suggestion.
+    ///
+    /// - Parameter textView: the view which is used.
+    open func setSuggestionTextView<TextView: SuggestionTextViewType>(textView: TextView) where TextView: UIView {
+        suggestionTextView = textView
+    }
+    
+    /// Sets the view which will be used to display the suggestions as a list.
+    ///
+    /// - Parameter contentView: the view which is used to display the list.
+    open func setSuggestionsContentView<ContentView: SuggestionsContentViewType>(contentView: ContentView) where ContentView: UIView {
+        suggestionsContentView = contentView
     }
     
     /**
@@ -187,8 +174,8 @@ open class SuggestionsTextField: UITextField {
      */
     open func showSuggestionsContentView() {
         if addContentViewOnWindow, let window = UIApplication.shared.delegate?.window,
-            let contentView = suggestionsContentView {
-            window?.addSubviewType(contentView)
+            let contentView = suggestionsContentView as? UIView {
+            window?.addSubview(contentView)
         }
     }
 
@@ -196,7 +183,7 @@ open class SuggestionsTextField: UITextField {
      Removes content view from view hierarchy.
      */
     open func hideSuggestionsContentView() {
-        suggestionsContentView?.removeFromSuperViewType()
+        suggestionsContentView?.removeFromSuperview()
     }
     
     // MARK: UITextField Layout
@@ -379,12 +366,12 @@ open class SuggestionsTextField: UITextField {
     }
     
     fileprivate func showSuggestionTextView() {
-        if let textView = suggestionTextView {
-            addSubviewType(textView)
+        if let textView = suggestionTextView as? UIView {
+            addSubview(textView)
         }
     }
 
     fileprivate func hideSuggestionTextView() {
-        suggestionTextView?.removeFromSuperViewType()
+        suggestionTextView?.removeFromSuperview()
     }
 }
