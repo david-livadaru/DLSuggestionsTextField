@@ -8,7 +8,6 @@
 
 import CoreGraphics
 
-
 public protocol RoundApplicable {
     mutating func roundInPlace()
 }
@@ -64,11 +63,11 @@ extension CGPoint : RoundApplicable, FloorApplicable, CeilApplicable {
 }
 
 extension CGRect {
-    mutating public func insetInPlace(point: CGPoint) {
-        insetInPlace(dx: point.x, dy: point.y)
+    mutating public func insetBy(point: CGPoint) {
+        insetBy(dx: point.x, dy: point.y)
     }
     
-    mutating public func insetInPlace(insets: UIEdgeInsets) {
+    mutating public func insetUsing(insets: UIEdgeInsets) {
         self = UIEdgeInsetsInsetRect(self, insets)
     }
 }

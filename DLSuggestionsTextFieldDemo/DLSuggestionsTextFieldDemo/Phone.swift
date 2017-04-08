@@ -10,9 +10,9 @@ import Foundation
 
 class OperatingSystem {
     let name: String
-    let version: NSOperatingSystemVersion
+    let version: OperatingSystemVersion
     
-    init(name: String = "iOS", version: NSOperatingSystemVersion = NSOperatingSystemVersion()) {
+    init(name: String = "iOS", version: OperatingSystemVersion = OperatingSystemVersion()) {
         self.name = name
         self.version = version
     }

@@ -8,23 +8,13 @@
 
 import UIKit
 
-
 @objc public protocol UIViewType : NSObjectProtocol {
     var frame: CGRect { get set }
     
-    func addSubviewType(viewType: UIViewType)
-    func removeFromSuperViewType()
+    func addSubview(_ view: UIView)
+    func removeFromSuperview()
     
-    func systemLayoutSizeFittingSize(targetSize: CGSize) -> CGSize
+    func systemLayoutSizeFittingSize(_ targetSize: CGSize) -> CGSize
 }
 
-extension UIView : UIViewType {
-    public func addSubviewType(viewType: UIViewType) {
-        guard let view = viewType as? UIView else { return }
-        addSubview(view)
-    }
-    
-    public func removeFromSuperViewType() {
-        removeFromSuperview()
-    }
-}
+extension UIView : UIViewType {}

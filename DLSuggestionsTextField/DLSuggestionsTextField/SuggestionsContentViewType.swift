@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 @objc public protocol SuggestionsContentViewType : UIViewType {
     var contentSize: CGSize { get set }
     

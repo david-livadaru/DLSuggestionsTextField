@@ -9,18 +9,17 @@
 import Foundation
 import CoreGraphics
 
-
-public class KeyboardAnimationTraits : NSObject {
-    public let frame: CGRect
-    public let duration: NSTimeInterval
-    public let curve: UInt
+open class KeyboardAnimationTraits : NSObject {
+    open let frame: CGRect
+    open let duration: TimeInterval
+    open let curve: UInt
     
-    public var isKeyboardHidden: Bool {
-        let screenBounds = UIScreen.mainScreen().bounds
+    open var isKeyboardHidden: Bool {
+        let screenBounds = UIScreen.main.bounds
         return frame.minY == screenBounds.maxY
     }
     
-    public init(frame: CGRect = CGRect.zero, duration: NSTimeInterval = 0, curve: UInt = 0) {
+    public init(frame: CGRect = CGRect.zero, duration: TimeInterval = 0, curve: UInt = 0) {
         self.frame = frame
         self.duration = duration
         self.curve = curve

@@ -12,9 +12,9 @@ import DLSuggestionsTextField
 class PhonesSuggestionsHandler: NSObject {
     let storage = Storage()
     
-    private (set) var phones: [Phone] = []
+    fileprivate (set) var phones: [Phone] = []
     
-    static let kTableViewCellReuseIdentifier = "\(String(PhonesSuggestionsHandler)).\(String(UITableViewCell))"
+    static let kTableViewCellReuseIdentifier = "\(String(describing: PhonesSuggestionsHandler.self)).\(String(describing: UITableViewCell.self))"
     
     override init() {
         phones = storage.phones
@@ -23,14 +23,14 @@ class PhonesSuggestionsHandler: NSObject {
 }
 
 extension PhonesSuggestionsHandler : UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return phones.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(PhonesSuggestionsHandler.kTableViewCellReuseIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: PhonesSuggestionsHandler.kTableViewCellReuseIdentifier)
         if cell == nil {
-            cell = UITableViewCell(style: .Subtitle, reuseIdentifier: PhonesSuggestionsHandler.kTableViewCellReuseIdentifier)
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: PhonesSuggestionsHandler.kTableViewCellReuseIdentifier)
         }
         
         let phone = phones[indexPath.row]
@@ -42,13 +42,13 @@ extension PhonesSuggestionsHandler : UITableViewDataSource {
 }
 
 extension PhonesSuggestionsHandler : SuggestionsTextFieldConfigurationDelegate {
-    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: () -> Void) {
-        if textField.text?.characters.count > 0, let text = textField.text {
+    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: @escaping (Void) -> Void) {
+        if let text = textField.text, text.characters.count > 0 {
             phones = storage.phones.filter({ (phone) -> Bool in
                 let yearString = "\(phone.year)"
-                return phone.name.containsString(text) ||
-                    phone.lastestSupportedOS.name.containsString(text) ||
-                    yearString.hasPrefix(text)
+                return (phone.name.contains(text) ||
+                        phone.lastestSupportedOS.name.contains(text) ||
+                        yearString.hasPrefix(text))
             })
         } else {
             phones = storage.phones
