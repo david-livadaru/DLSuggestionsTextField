@@ -13,7 +13,6 @@
 		630DC9DB1D30160300F28B00 /* SuggestionsContentViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */; };
 		630DC9DD1D30171E00F28B00 /* SuggestionsContentViewTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */; };
 		630DC9DF1D30174A00F28B00 /* KeyboardAnimationTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */; };
-		630DC9E11D30238700F28B00 /* UIViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9E01D30238700F28B00 /* UIViewType.swift */; };
 		630DC9E61D302EC500F28B00 /* CGGeometry+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,7 +25,6 @@
 		630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsContentViewType.swift; sourceTree = "<group>"; };
 		630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsContentViewTraits.swift; sourceTree = "<group>"; };
 		630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAnimationTraits.swift; sourceTree = "<group>"; };
-		630DC9E01D30238700F28B00 /* UIViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewType.swift; sourceTree = "<group>"; };
 		630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGGeometry+Additions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,7 +61,6 @@
 				630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */,
 				630DC9C51D3013BC00F28B00 /* Info.plist */,
 				630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */,
-				630DC9E01D30238700F28B00 /* UIViewType.swift */,
 				630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */,
 				630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */,
 				630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */,
@@ -111,12 +108,12 @@
 		630DC9B71D3013BC00F28B00 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Community;
 				TargetAttributes = {
 					630DC9BF1D3013BC00F28B00 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -155,7 +152,6 @@
 				630DC9DB1D30160300F28B00 /* SuggestionsContentViewType.swift in Sources */,
 				630DC9E61D302EC500F28B00 /* CGGeometry+Additions.swift in Sources */,
 				630DC9D91D30152A00F28B00 /* SuggestionTextViewType.swift in Sources */,
-				630DC9E11D30238700F28B00 /* UIViewType.swift in Sources */,
 				630DC9DD1D30171E00F28B00 /* SuggestionsContentViewTraits.swift in Sources */,
 				630DC9D71D30149B00F28B00 /* SuggestionsTextField.swift in Sources */,
 				630DC9DF1D30174A00F28B00 /* KeyboardAnimationTraits.swift in Sources */,
@@ -174,14 +170,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -210,6 +212,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -225,14 +228,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -254,6 +263,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -280,7 +290,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -302,7 +313,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = CM.DLSuggestionsTextField;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

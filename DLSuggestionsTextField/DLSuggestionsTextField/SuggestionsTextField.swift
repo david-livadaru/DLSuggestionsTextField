@@ -74,11 +74,13 @@ import UIKit
      - parameter completion: closure which reloads content of contentView.
      */
     @objc optional func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField,
-                                                          completion: @escaping (Void) -> Void)
+                                                          completion: @escaping () -> Void)
 }
 
 // MARK: - SuggestionsTextField
 @IBDesignable open class SuggestionsTextField: UITextField {
+    public typealias SuggestionTextView = UIView & SuggestionTextViewType
+    public typealias SuggestionsContentView = UIView & SuggestionsContentViewType
     /// Adjusts vertical text insets.
     @IBInspectable open var verticalTextInsets: CGPoint = CGPoint.zero {
         didSet {
@@ -118,9 +120,9 @@ import UIKit
     open var addContentViewOnWindow = true
     
     /// Text view which might display proposed suggestion or the remaining text of suggestion.
-    open fileprivate (set) var suggestionTextView: SuggestionTextViewType?
+    open fileprivate (set) var suggestionTextView: SuggestionTextView?
     /// Content view which displays the list of suggestions.
-    open fileprivate (set) var suggestionsContentView: SuggestionsContentViewType?
+    open fileprivate (set) var suggestionsContentView: SuggestionsContentView?
     
     /// Text insets created from vertical and horizontal insets.
     open var textInsets: UIEdgeInsets {
@@ -174,7 +176,7 @@ import UIKit
      */
     open func showSuggestionsContentView() {
         if addContentViewOnWindow, let window = UIApplication.shared.delegate?.window,
-            let contentView = suggestionsContentView as? UIView {
+            let contentView = suggestionsContentView {
             window?.addSubview(contentView)
         }
     }
@@ -204,7 +206,7 @@ import UIKit
     
     open func suggestionsTextViewFrame(availableTextRect: CGRect,
                                                            requiredTextRect: CGRect) -> CGRect {
-        var requiredLabelSize = suggestionTextView?.systemLayoutSizeFittingSize(availableTextRect.size) ?? CGSize.zero
+        var requiredLabelSize = suggestionTextView?.systemLayoutSizeFitting(availableTextRect.size) ?? CGSize.zero
         requiredLabelSize.ceilInPlace()
         
         let availableWidth = max(0, availableTextRect.width - requiredTextRect.width)
@@ -366,7 +368,7 @@ import UIKit
     }
     
     fileprivate func showSuggestionTextView() {
-        if let textView = suggestionTextView as? UIView {
+        if let textView = suggestionTextView {
             addSubview(textView)
         }
     }

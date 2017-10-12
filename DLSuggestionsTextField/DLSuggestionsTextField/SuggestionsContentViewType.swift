@@ -8,11 +8,10 @@
 
 import UIKit
 
-@objc public protocol SuggestionsContentViewType : UIViewType {
+@objc public protocol SuggestionsContentViewType: class {
     var contentSize: CGSize { get set }
     
     func reloadData()
-    func layoutIfNeeded()
 }
 
 extension UITableView : SuggestionsContentViewType {}

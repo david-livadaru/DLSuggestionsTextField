@@ -9,7 +9,7 @@
 import UIKit
 
 
-@objc public protocol SuggestionTextViewType : UIViewType {
+@objc public protocol SuggestionTextViewType: class {
     var attributedText: NSAttributedString? { get set }
 }
 
