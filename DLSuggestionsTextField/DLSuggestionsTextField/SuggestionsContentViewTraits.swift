@@ -9,9 +9,9 @@
 import Foundation
 import CoreGraphics
 
-open class SuggestionsContentViewTraits : NSObject {
+open class SuggestionsContentViewTraits: NSObject {
     open let frame: CGRect
-    
+
     public init(frame: CGRect = CGRect.zero) {
         self.frame = frame
         super.init()

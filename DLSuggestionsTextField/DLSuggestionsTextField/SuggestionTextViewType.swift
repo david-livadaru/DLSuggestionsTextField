@@ -8,9 +8,8 @@
 
 import UIKit
 
-
 @objc public protocol SuggestionTextViewType: class {
     var attributedText: NSAttributedString? { get set }
 }
 
-extension UILabel : SuggestionTextViewType {}
+extension UILabel: SuggestionTextViewType {}
