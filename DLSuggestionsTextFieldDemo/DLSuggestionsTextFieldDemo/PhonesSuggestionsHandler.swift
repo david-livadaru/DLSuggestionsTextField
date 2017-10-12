@@ -42,7 +42,7 @@ extension PhonesSuggestionsHandler : UITableViewDataSource {
 }
 
 extension PhonesSuggestionsHandler : SuggestionsTextFieldConfigurationDelegate {
-    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: @escaping (Void) -> Void) {
+    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: @escaping () -> Void) {
         if let text = textField.text, text.characters.count > 0 {
             phones = storage.phones.filter({ (phone) -> Bool in
                 let yearString = "\(phone.year)"

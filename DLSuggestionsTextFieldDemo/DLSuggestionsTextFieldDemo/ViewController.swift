@@ -9,6 +9,21 @@
 import UIKit
 import DLSuggestionsTextField
 
+fileprivate extension Dictionary {
+    typealias TransformClosure<NewKey, NewValue> = ((key: Key, value: Value)) -> (key: NewKey,
+                                                                                  value: NewValue)
+    func map<NewKey, NewValue>(_ transform: TransformClosure<NewKey, NewValue>) -> [NewKey: NewValue] {
+        var newDictionary: [NewKey: NewValue] = [:]
+        for key in keys {
+            if let value = self[key] {
+                let mappedPair = transform((key, value))
+                newDictionary[mappedPair.key] = mappedPair.value
+            }
+        }
+        return newDictionary
+    }
+}
+
 class ViewController: UIViewController {
     @IBOutlet weak var suggestionsTextField: SuggestionsTextField!
     
@@ -16,7 +31,7 @@ class ViewController: UIViewController {
     fileprivate let suggestionsTableView = UITableView()
     fileprivate let suggestionsLabel = UILabel()
     
-    fileprivate var placeholderAttributes: [String : AnyObject] = [:]
+    fileprivate var placeholderAttributes: [NSAttributedStringKey : Any] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +44,11 @@ class ViewController: UIViewController {
         suggestionsTableView.delegate = self
         suggestionsTableView.tableFooterView = UIView()
         
-        placeholderAttributes[NSFontAttributeName] = UIFont(name: "Arial", size: 14)
-        placeholderAttributes[NSForegroundColorAttributeName] = UIColor.lightGray
+        placeholderAttributes[NSAttributedStringKey.font] = UIFont(name: "Arial", size: 14)
+        placeholderAttributes[NSAttributedStringKey.foregroundColor] = UIColor.lightGray
         var textAttributes = placeholderAttributes
-        textAttributes[NSForegroundColorAttributeName] = UIColor.darkText
-        suggestionsTextField.defaultTextAttributes = textAttributes
+        textAttributes[NSAttributedStringKey.foregroundColor] = UIColor.darkText
+        suggestionsTextField.defaultTextAttributes = textAttributes.map({ (key: $0.key.rawValue, value: $0.value) })
         suggestionsTextField.attributedPlaceholder = NSAttributedString(string: "Search for a phone",
                                                                         attributes: placeholderAttributes)
         suggestionsTextField.configurationDelegate = self
@@ -71,13 +86,14 @@ class ViewController: UIViewController {
         suggestionsTextField.text = phone.name
     }
     
-    fileprivate func filterSuggestions(_ completion: @escaping (Void) -> Void) {
+    fileprivate func filterSuggestions(_ completion: @escaping () -> Void) {
         suggestionsHandler.suggestionsTextFieldDidChangeText(textField: suggestionsTextField, completion: {
             var suggestionText = ""
             if let phone = self.suggestionsHandler.phones.first,
                 let text = self.suggestionsTextField.text, phone.name.hasPrefix(text) {
-                let substringIndex = phone.name.characters.index(phone.name.startIndex, offsetBy: text.characters.count)
-                suggestionText = phone.name.substring(from: substringIndex)
+                let substringIndex = phone.name.characters.index(phone.name.startIndex,
+                                                                 offsetBy: text.characters.count)
+                suggestionText = String(phone.name[substringIndex..<phone.name.endIndex])
                 
             }
             self.suggestionsLabel.attributedText = NSAttributedString(string: suggestionText,
@@ -138,7 +154,7 @@ extension ViewController : SuggestionsTextFieldConfigurationDelegate {
         }
     }
     
-    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: @escaping (Void) -> Void) {
+    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: @escaping () -> Void) {
         filterSuggestions(completion)
     }
 }
