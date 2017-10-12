@@ -304,33 +304,20 @@ import UIKit
     }
 
     @objc fileprivate func keyboardWillShow(_ notification: Notification) {
-        guard let keyboardFrameValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-            let keyboardAnimationDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey],
-            let keyboardAnimationCurve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey]
-            else { return }
+        guard let traits = KeyboardAnimationTraits(notification: notification) else { return }
 
-        keyboardFrame = keyboardFrameValue.cgRectValue
-        let keyboardAnimationTraits = KeyboardAnimationTraits(frame: keyboardFrame,
-                                                              duration: (keyboardAnimationDuration as AnyObject).doubleValue,
-                                                              curve: (keyboardAnimationCurve as AnyObject).uintValue)
+        keyboardFrame = traits.frame
         let contentViewTraits = SuggestionsContentViewTraits(frame: computeSuggestionsContentViewFrame())
-        configurationDelegate?.suggestionsTextField?(textField: self,
-                                                     proposedContentViewTraits: contentViewTraits,
-                                                     keybordWillShowWith: keyboardAnimationTraits)
+        configurationDelegate?.suggestionsTextField?(textField: self, proposedContentViewTraits: contentViewTraits,
+                                                     keybordWillShowWith: traits)
     }
 
     @objc fileprivate func keyboardWillHide(_ notification: Notification) {
-        guard let keyboardFrameValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-            let keyboardAnimationDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey],
-            let keyboardAnimationCurve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey]
-            else { return }
+        guard let traits = KeyboardAnimationTraits(notification: notification) else { return }
 
-        keyboardFrame = keyboardFrameValue.cgRectValue
-        let keyboardAnimationTraits = KeyboardAnimationTraits(frame: keyboardFrame,
-                                                              duration: (keyboardAnimationDuration as AnyObject).doubleValue,
-                                                              curve: (keyboardAnimationCurve as AnyObject).uintValue)
+        keyboardFrame = traits.frame
         configurationDelegate?.suggestionsTextField?(textField: self,
-                                                     keybordWillHideWith: keyboardAnimationTraits)
+                                                     keybordWillHideWith: traits)
     }
 
     // MARK: Private

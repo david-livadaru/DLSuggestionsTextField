@@ -131,9 +131,8 @@ extension ViewController : SuggestionsTextFieldConfigurationDelegate {
         hiddenContentViewFrame.size.height = 0
         
         suggestionsTableView.frame = hiddenContentViewFrame
-        UIView.animate(withDuration: keyboardAnimationTraits.duration, delay: 0,
-                                   options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
-                                   animations: {
+        UIView.animate(withDuration: keyboardAnimationTraits.duration, delay: 0, options: keyboardAnimationTraits.curve,
+                       animations: {
             self.suggestionsTableView.frame = contentViewFrame
         }, completion: nil)
     }
@@ -143,10 +142,9 @@ extension ViewController : SuggestionsTextFieldConfigurationDelegate {
         var hiddenContentViewFrame = suggestionsTableView.frame
         hiddenContentViewFrame.size.height = 0
         
-        UIView.animate(withDuration: keyboardAnimationTraits.duration, delay: 0,
-                                   options: UIViewAnimationOptions(rawValue: keyboardAnimationTraits.curve),
-                                   animations: {
-                                    textField.suggestionsContentView?.frame = hiddenContentViewFrame
+        UIView.animate(withDuration: keyboardAnimationTraits.duration, delay: 0,options: keyboardAnimationTraits.curve,
+                       animations: {
+            textField.suggestionsContentView?.frame = hiddenContentViewFrame
         }) { (finished) in
             if keyboardAnimationTraits.isKeyboardHidden {
                 textField.hideSuggestionsContentView()
