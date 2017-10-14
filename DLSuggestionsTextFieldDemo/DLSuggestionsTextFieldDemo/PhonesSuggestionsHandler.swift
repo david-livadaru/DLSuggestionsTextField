@@ -17,6 +17,14 @@ class PhonesSuggestionsHandler: NSObject {
     let storage = Storage()
 
     weak var observer: PhonesSuggestionsHandlerObserver?
+
+    private var textField: UITextField? {
+        didSet {
+            NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: oldValue)
+            NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChangeText(_:)),
+                                                   name: .UITextFieldTextDidChange, object: textField)
+        }
+    }
     
     fileprivate (set) var phones: [Phone] = [] {
         didSet {
@@ -24,17 +32,19 @@ class PhonesSuggestionsHandler: NSObject {
         }
     }
     
-    static let kTableViewCellReuseIdentifier = "\(String(describing: PhonesSuggestionsHandler.self)).\(String(describing: UITableViewCell.self))"
+    static let kTableViewCellReuseIdentifier = "\(String(describing: PhonesSuggestionsHandler.self))"
     
     override init() {
         phones = storage.phones
         super.init()
     }
 
-    @objc func textFieldDidChangeText(_ notification: Notification) {
-        guard let textField = notification.object as? TextField else { return }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
-        updatePhoneFor(textField)
+    func filterPhonesWithText(from textField: UITextField) {
+        self.textField = textField
     }
 
     func updatePhoneFor(_ textField: TextField) {
@@ -48,6 +58,14 @@ class PhonesSuggestionsHandler: NSObject {
         } else {
             phones = storage.phones
         }
+    }
+
+    // MARK: Private actions
+
+    @objc private func textFieldDidChangeText(_ notification: Notification) {
+        guard let textField = notification.object as? TextField else { return }
+
+        updatePhoneFor(textField)
     }
 }
 

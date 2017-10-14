@@ -56,13 +56,7 @@ class ViewController: UIViewController, PhonesSuggestionsHandlerObserver {
         suggestionsTextField.suggestionLabel = suggestionsLabel
         suggestionsTextField.suggestionsContentView = suggestionsTableView
 
-        NotificationCenter.default.addObserver(suggestionsHandler,
-                                               selector: #selector(PhonesSuggestionsHandler.textFieldDidChangeText(_:)),
-                                               name: .UITextFieldTextDidChange, object: suggestionsTextField)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(suggestionsHandler)
+        suggestionsHandler.filterPhonesWithText(from: suggestionsTextField)
     }
     
     override func viewDidAppear(_ animated: Bool) {

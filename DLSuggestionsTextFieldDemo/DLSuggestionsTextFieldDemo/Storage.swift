@@ -20,6 +20,10 @@ class Storage {
         let iOS9_3_4 = OperatingSystem(version: OperatingSystemVersion(majorVersion: 9, minorVersion: 3, patchVersion: 4))
         let iOS10Beta = OperatingSystem(name: "iOS 10 Beta",
                                         version: OperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0))
+        let iOS10 = OperatingSystem(name: "iOS 10",
+                                        version: OperatingSystemVersion(majorVersion: 10, minorVersion: 0, patchVersion: 0))
+        let iOS11 = OperatingSystem(name: "iOS 11",
+                                    version: OperatingSystemVersion(majorVersion: 11, minorVersion: 0, patchVersion: 0))
         
         let iPhoneFirstGen = Phone(name: "iPhone (1st Gen)", lastestSupportedOS: iPhoneOS3, year: 2007)
         let iPhone3G = Phone(name: "iPhone 3G", lastestSupportedOS: iOS4_2_1, year: 2008)
@@ -34,8 +38,13 @@ class Storage {
         let iPhone6S = Phone(name: "iPhone 6S", lastestSupportedOS: iOS10Beta, year: 2015)
         let iPhone6SPlus = Phone(name: "iPhone 6S Plus", lastestSupportedOS: iOS10Beta, year: 2015)
         let iPhoneSE = Phone(name: "iPhone SE", lastestSupportedOS: iOS10Beta, year: 2016)
+        let iPhone7 = Phone(name: "iPhone 7", lastestSupportedOS: iOS10, year: 2016)
+        let iPhone7Plus = Phone(name: "iPhone 7 Plus", lastestSupportedOS: iOS10, year: 2016)
+        let iPhoneX = Phone(name: "iPhone X", lastestSupportedOS: iOS11, year: 2017)
+        let iPhone8 = Phone(name: "iPhone 8", lastestSupportedOS: iOS11, year: 2017)
+        let iPhone8Plus = Phone(name: "iPhone 8 Plus", lastestSupportedOS: iOS11, year: 2017)
         
         phones = [iPhoneFirstGen, iPhone3G, iPhone3GS, iPhone4, iPhone4S, iPhone5, iPhone5C, iPhone5S, iPhone6,
-                  iPhone6Plus, iPhone6S, iPhone6SPlus, iPhoneSE]
+                  iPhone6Plus, iPhone6S, iPhone6SPlus, iPhoneSE, iPhone7, iPhone7Plus, iPhoneX, iPhone8, iPhone8Plus]
     }
 }
