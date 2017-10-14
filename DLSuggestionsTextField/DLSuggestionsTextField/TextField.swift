@@ -11,7 +11,6 @@ import UIKit
 // MARK: - SuggestionsTextField
 @IBDesignable open class TextField: UITextField {
     public typealias LabelViewType = UIView & LabelView
-    public typealias ContentViewType = UIView & ContentView
 
     open override var text: String? {
         didSet {
@@ -60,10 +59,10 @@ import UIKit
     /// The label which displays the proposed suggestion or the remaining text of suggestion.
     open var suggestionLabel: LabelViewType?
     /// Content view which displays the list of suggestions.
-    open var suggestionsContentView: ContentViewType?
+    open var suggestionsContentView: UIView?
 
     /// The view where content view will be placed. If this property is nil, the visible window will be used.
-    public private (set) var contentViewContainer: UIView?
+    public var contentViewContainer: UIView?
 
     open var layoutController: LayoutController!
     open var animationController: AnimationController!
@@ -85,13 +84,6 @@ import UIKit
         super.init(coder: aDecoder)
 
         initializeView()
-    }
-
-    /// Set a container view where the content view will be placed.
-    ///
-    /// - Parameter contentViewContainer: the container view.
-    public func setContentViewContainer(_ contentViewContainer: UIView) {
-        self.contentViewContainer = contentViewContainer
     }
 
     public func addLabelViewToViewHierarchy() {
