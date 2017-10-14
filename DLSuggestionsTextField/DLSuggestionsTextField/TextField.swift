@@ -1,5 +1,5 @@
 //
-//  SuggestionsTextField.swift
+//  TextField.swift
 //  DLSuggestionsTextField
 //
 //  Created by David Livadaru on 08/07/16.
@@ -18,8 +18,8 @@ import UIKit
      - parameter textField:         textField which called the delegate.
      - parameter contentViewTraits: proposed content view traits.
      */
-    @objc optional func suggestionsTextField(textField: SuggestionsTextField,
-                                             proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits) -> CGRect
+    @objc optional func suggestionsTextField(textField: TextField,
+                                             proposedContentViewTraits contentViewTraits: ContentViewTraits) -> CGRect
     /**
      Customization point before keyboard will show.
      View hierarchy needs to redo layout in order to adjust content shown to user
@@ -29,8 +29,8 @@ import UIKit
      - parameter contentViewTraits:       proposed content view traits.
      - parameter keyboardAnimationTraits: keyboard animation data.
      */
-    @objc optional func suggestionsTextField(textField: SuggestionsTextField,
-                                       proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits,
+    @objc optional func suggestionsTextField(textField: TextField,
+                                       proposedContentViewTraits contentViewTraits: ContentViewTraits,
                                        keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits)
 
     /**
@@ -41,7 +41,7 @@ import UIKit
      - parameter textField:               textField which called the delegate.
      - parameter keyboardAnimationTraits: keyboard animation data.
      */
-    @objc optional func suggestionsTextField(textField: SuggestionsTextField,
+    @objc optional func suggestionsTextField(textField: TextField,
                                        keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits)
 
     /**
@@ -52,8 +52,8 @@ import UIKit
      - parameter textField:   textField which called the delegate.
      - parameter completion:  closure which removes content view from view hierarchy.
      */
-    @objc optional func suggestionsTextField(textField: SuggestionsTextField,
-                                       hideSuggestionsContentView contentView: SuggestionsContentViewType?,
+    @objc optional func suggestionsTextField(textField: TextField,
+                                       hideSuggestionsContentView contentView: ContentView?,
                                        completion: () -> Void)
     /**
      Asks the delegate if forced layout can be done in order to compute proposed frame.
@@ -63,7 +63,7 @@ import UIKit
      
      - returns: Returns false if layout should not be forced.
      */
-    @objc optional func suggestionsTextFieldShouldPerformLayoutOnFrameComputationForContentView(textField: SuggestionsTextField) -> Bool
+    @objc optional func suggestionsTextFieldShouldPerformLayoutOnFrameComputationForContentView(textField: TextField) -> Bool
     /**
      Informs the delegate that text from textField did change.
      At this point the data source of content view might be filetered,
@@ -73,14 +73,14 @@ import UIKit
      - parameter textField:  textField which called the delegate.
      - parameter completion: closure which reloads content of contentView.
      */
-    @objc optional func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField,
+    @objc optional func suggestionsTextFieldDidChangeText(textField: TextField,
                                                           completion: @escaping () -> Void)
 }
 
 // MARK: - SuggestionsTextField
-@IBDesignable open class SuggestionsTextField: UITextField {
-    public typealias SuggestionTextView = UIView & SuggestionTextViewType
-    public typealias SuggestionsContentView = UIView & SuggestionsContentViewType
+@IBDesignable open class TextField: UITextField {
+    public typealias TextViewType = UIView & TextView
+    public typealias ContentViewType = UIView & ContentView
     /// Adjusts vertical text insets.
     @IBInspectable open var verticalTextInsets: CGPoint = CGPoint.zero {
         didSet {
@@ -120,9 +120,9 @@ import UIKit
     open var addContentViewOnWindow = true
 
     /// Text view which might display proposed suggestion or the remaining text of suggestion.
-    open fileprivate (set) var suggestionTextView: SuggestionTextView?
+    open fileprivate (set) var suggestionTextView: TextViewType?
     /// Content view which displays the list of suggestions.
-    open fileprivate (set) var suggestionsContentView: SuggestionsContentView?
+    open fileprivate (set) var suggestionsContentView: ContentViewType?
 
     /// Text insets created from vertical and horizontal insets.
     open var textInsets: UIEdgeInsets {
@@ -160,14 +160,14 @@ import UIKit
     /// Sets the view which will be used to display the selected suggestion.
     ///
     /// - Parameter textView: the view which is used.
-    open func setSuggestionTextView<TextView: SuggestionTextViewType>(textView: TextView) where TextView: UIView {
+    open func setSuggestionTextView<TextView: TextView>(textView: TextView) where TextView: UIView {
         suggestionTextView = textView
     }
 
     /// Sets the view which will be used to display the suggestions as a list.
     ///
     /// - Parameter contentView: the view which is used to display the list.
-    open func setSuggestionsContentView(contentView: SuggestionsContentView) {
+    open func setSuggestionsContentView(contentView: ContentViewType) {
         suggestionsContentView = contentView
     }
 
@@ -279,7 +279,7 @@ import UIKit
 
     @objc fileprivate func didBeginEditing() {
         var frame = computeSuggestionsContentViewFrame()
-        let traits = SuggestionsContentViewTraits(frame: frame)
+        let traits = ContentViewTraits(frame: frame)
         frame.size.height = 0
         if let delegateFrame = configurationDelegate?.suggestionsTextField?(textField: self,
                                                                             proposedContentViewTraits: traits) {
@@ -307,7 +307,7 @@ import UIKit
         guard let traits = KeyboardAnimationTraits(notification: notification) else { return }
 
         keyboardFrame = traits.frame
-        let contentViewTraits = SuggestionsContentViewTraits(frame: computeSuggestionsContentViewFrame())
+        let contentViewTraits = ContentViewTraits(frame: computeSuggestionsContentViewFrame())
         configurationDelegate?.suggestionsTextField?(textField: self, proposedContentViewTraits: contentViewTraits,
                                                      keybordWillShowWith: traits)
     }
@@ -323,18 +323,18 @@ import UIKit
     // MARK: Private
 
     fileprivate func registerToNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(SuggestionsTextField.didBeginEditing),
+        NotificationCenter.default.addObserver(self, selector: #selector(TextField.didBeginEditing),
                                                          name: NSNotification.Name.UITextFieldTextDidBeginEditing,
                                                          object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(SuggestionsTextField.didEndEditing),
+        NotificationCenter.default.addObserver(self, selector: #selector(TextField.didEndEditing),
                                                          name: NSNotification.Name.UITextFieldTextDidEndEditing,
                                                          object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(SuggestionsTextField.didChangeText),
+        NotificationCenter.default.addObserver(self, selector: #selector(TextField.didChangeText),
                                                          name: NSNotification.Name.UITextFieldTextDidChange,
                                                          object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(SuggestionsTextField.keyboardWillShow(_:)),
+        NotificationCenter.default.addObserver(self, selector: #selector(TextField.keyboardWillShow(_:)),
                                                          name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(SuggestionsTextField.keyboardWillHide(_:)),
+        NotificationCenter.default.addObserver(self, selector: #selector(TextField.keyboardWillHide(_:)),
                                                          name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 

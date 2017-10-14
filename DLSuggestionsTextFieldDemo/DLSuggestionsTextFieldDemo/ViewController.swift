@@ -25,7 +25,7 @@ fileprivate extension Dictionary {
 }
 
 class ViewController: UIViewController {
-    @IBOutlet weak var suggestionsTextField: SuggestionsTextField!
+    @IBOutlet weak var suggestionsTextField: TextField!
     
     fileprivate let suggestionsHandler = PhonesSuggestionsHandler()
     fileprivate let suggestionsTableView = UITableView()
@@ -117,8 +117,8 @@ extension ViewController : UITableViewDelegate {
 }
 
 extension ViewController : SuggestionsTextFieldConfigurationDelegate {
-    func suggestionsTextField(textField: SuggestionsTextField,
-                              proposedContentViewTraits contentViewTraits: SuggestionsContentViewTraits,
+    func suggestionsTextField(textField: TextField,
+                              proposedContentViewTraits contentViewTraits: ContentViewTraits,
                               keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits) {
         if suggestionsTableView.isHidden {
             suggestionsTableView.isHidden = false
@@ -137,7 +137,7 @@ extension ViewController : SuggestionsTextFieldConfigurationDelegate {
         }, completion: nil)
     }
     
-    func suggestionsTextField(textField: SuggestionsTextField,
+    func suggestionsTextField(textField: TextField,
                               keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits) {
         var hiddenContentViewFrame = suggestionsTableView.frame
         hiddenContentViewFrame.size.height = 0
@@ -152,7 +152,7 @@ extension ViewController : SuggestionsTextFieldConfigurationDelegate {
         }
     }
     
-    func suggestionsTextFieldDidChangeText(textField: SuggestionsTextField, completion: @escaping () -> Void) {
+    func suggestionsTextFieldDidChangeText(textField: TextField, completion: @escaping () -> Void) {
         filterSuggestions(completion)
     }
 }

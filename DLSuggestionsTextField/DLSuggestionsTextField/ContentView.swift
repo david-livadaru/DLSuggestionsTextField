@@ -1,5 +1,5 @@
 //
-//  SuggestionsContentViewType.swift
+//  ContentView.swift
 //  DLSuggestionsTextField
 //
 //  Created by David Livadaru on 08/07/16.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-@objc public protocol SuggestionsContentViewType: class {
+@objc public protocol ContentView: class {
     var contentSize: CGSize { get set }
 
     func reloadData()
 }
 
-extension UITableView: SuggestionsContentViewType {}
+extension UITableView: ContentView {}
 
-extension UICollectionView: SuggestionsContentViewType {}
+extension UICollectionView: ContentView {}

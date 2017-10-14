@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		630DC9C41D3013BC00F28B00 /* DLSuggestionsTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		630DC9D71D30149B00F28B00 /* SuggestionsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */; };
-		630DC9D91D30152A00F28B00 /* SuggestionTextViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */; };
-		630DC9DB1D30160300F28B00 /* SuggestionsContentViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */; };
-		630DC9DD1D30171E00F28B00 /* SuggestionsContentViewTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */; };
+		630DC9D71D30149B00F28B00 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9D61D30149B00F28B00 /* TextField.swift */; };
+		630DC9D91D30152A00F28B00 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9D81D30152A00F28B00 /* TextView.swift */; };
+		630DC9DB1D30160300F28B00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DA1D30160300F28B00 /* ContentView.swift */; };
+		630DC9DD1D30171E00F28B00 /* ContentViewTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DC1D30171E00F28B00 /* ContentViewTraits.swift */; };
 		630DC9DF1D30174A00F28B00 /* KeyboardAnimationTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */; };
 		630DC9E61D302EC500F28B00 /* CGGeometry+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */; };
 /* End PBXBuildFile section */
@@ -20,10 +20,10 @@
 		630DC9C01D3013BC00F28B00 /* DLSuggestionsTextField.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLSuggestionsTextField.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLSuggestionsTextField.h; sourceTree = "<group>"; };
 		630DC9C51D3013BC00F28B00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsTextField.swift; sourceTree = "<group>"; };
-		630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTextViewType.swift; sourceTree = "<group>"; };
-		630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsContentViewType.swift; sourceTree = "<group>"; };
-		630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsContentViewTraits.swift; sourceTree = "<group>"; };
+		630DC9D61D30149B00F28B00 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		630DC9D81D30152A00F28B00 /* TextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		630DC9DA1D30160300F28B00 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		630DC9DC1D30171E00F28B00 /* ContentViewTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewTraits.swift; sourceTree = "<group>"; };
 		630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAnimationTraits.swift; sourceTree = "<group>"; };
 		630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGGeometry+Additions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,10 +60,10 @@
 			children = (
 				630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */,
 				630DC9C51D3013BC00F28B00 /* Info.plist */,
-				630DC9D61D30149B00F28B00 /* SuggestionsTextField.swift */,
-				630DC9D81D30152A00F28B00 /* SuggestionTextViewType.swift */,
-				630DC9DA1D30160300F28B00 /* SuggestionsContentViewType.swift */,
-				630DC9DC1D30171E00F28B00 /* SuggestionsContentViewTraits.swift */,
+				630DC9D61D30149B00F28B00 /* TextField.swift */,
+				630DC9D81D30152A00F28B00 /* TextView.swift */,
+				630DC9DA1D30160300F28B00 /* ContentView.swift */,
+				630DC9DC1D30171E00F28B00 /* ContentViewTraits.swift */,
 				630DC9DE1D30174A00F28B00 /* KeyboardAnimationTraits.swift */,
 				630DC9E51D302EC500F28B00 /* CGGeometry+Additions.swift */,
 			);
@@ -166,11 +166,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				630DC9DB1D30160300F28B00 /* SuggestionsContentViewType.swift in Sources */,
+				630DC9DB1D30160300F28B00 /* ContentView.swift in Sources */,
 				630DC9E61D302EC500F28B00 /* CGGeometry+Additions.swift in Sources */,
-				630DC9D91D30152A00F28B00 /* SuggestionTextViewType.swift in Sources */,
-				630DC9DD1D30171E00F28B00 /* SuggestionsContentViewTraits.swift in Sources */,
-				630DC9D71D30149B00F28B00 /* SuggestionsTextField.swift in Sources */,
+				630DC9D91D30152A00F28B00 /* TextView.swift in Sources */,
+				630DC9DD1D30171E00F28B00 /* ContentViewTraits.swift in Sources */,
+				630DC9D71D30149B00F28B00 /* TextField.swift in Sources */,
 				630DC9DF1D30174A00F28B00 /* KeyboardAnimationTraits.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

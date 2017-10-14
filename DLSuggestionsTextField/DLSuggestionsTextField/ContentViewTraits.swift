@@ -1,5 +1,5 @@
 //
-//  SuggestionsContentViewTraits.swift
+//  ContentViewTraits.swift
 //  DLSuggestionsTextField
 //
 //  Created by David Livadaru on 08/07/16.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreGraphics
 
-open class SuggestionsContentViewTraits: NSObject {
+open class ContentViewTraits: NSObject {
     open let frame: CGRect
 
     public init(frame: CGRect = CGRect.zero) {

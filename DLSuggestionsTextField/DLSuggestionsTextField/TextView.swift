@@ -1,5 +1,5 @@
 //
-//  SuggestionTextViewType.swift
+//  TextView.swift
 //  DLSuggestionsTextField
 //
 //  Created by David Livadaru on 08/07/16.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-@objc public protocol SuggestionTextViewType: class {
+public protocol TextView: class {
     var attributedText: NSAttributedString? { get set }
 }
 
-extension UILabel: SuggestionTextViewType {}
+extension UILabel: TextView {}
