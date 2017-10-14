@@ -24,20 +24,20 @@ fileprivate extension Dictionary {
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, PhonesSuggestionsHandlerObserver {
     @IBOutlet weak var suggestionsTextField: TextField!
     
-    fileprivate let suggestionsHandler = PhonesSuggestionsHandler()
-    fileprivate let suggestionsTableView = UITableView()
-    fileprivate let suggestionsLabel = UILabel()
+    private let suggestionsHandler = PhonesSuggestionsHandler()
+    private let suggestionsTableView = TableView()
+    private let suggestionsLabel = UILabel()
     
-    fileprivate var placeholderAttributes: [NSAttributedStringKey : Any] = [:]
+    private var placeholderAttributes: [NSAttributedStringKey : Any] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        suggestionsTableView.isHidden = true
+
+        suggestionsHandler.observer = self
         view.addSubview(suggestionsTableView)
         
         suggestionsTableView.dataSource = suggestionsHandler
@@ -51,11 +51,18 @@ class ViewController: UIViewController {
         suggestionsTextField.defaultTextAttributes = textAttributes.map({ (key: $0.key.rawValue, value: $0.value) })
         suggestionsTextField.attributedPlaceholder = NSAttributedString(string: "Search for a phone",
                                                                         attributes: placeholderAttributes)
-        suggestionsTextField.configurationDelegate = self
         suggestionsTextField.suggestionTextSpacing = -3
-        
-        suggestionsTextField.setSuggestionTextView(textView: suggestionsLabel)
-        suggestionsTextField.setSuggestionsContentView(contentView: suggestionsTableView)
+
+        suggestionsTextField.suggestionLabel = suggestionsLabel
+        suggestionsTextField.suggestionsContentView = suggestionsTableView
+
+        NotificationCenter.default.addObserver(suggestionsHandler,
+                                               selector: #selector(PhonesSuggestionsHandler.textFieldDidChangeText(_:)),
+                                               name: .UITextFieldTextDidChange, object: suggestionsTextField)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(suggestionsHandler)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,6 +83,27 @@ class ViewController: UIViewController {
             view.endEditing(true)
         }
     }
+
+    // MARK: PhonesSuggestionsHandlerObserver
+
+    func handlerDidUpdatePhones(handler: PhonesSuggestionsHandler) {
+        updateSuggestionLabel()
+        suggestionsTableView.reloadData()
+    }
+
+    private func updateSuggestionLabel() {
+        var suggestionText = ""
+        if let phone = self.suggestionsHandler.phones.first,
+            let text = self.suggestionsTextField.text, text.count > 0,
+            phone.name.hasPrefix(text) {
+            let substringIndex = phone.name.characters.index(phone.name.startIndex,
+                                                             offsetBy: text.characters.count)
+            suggestionText = String(phone.name[substringIndex..<phone.name.endIndex])
+            
+        }
+        self.suggestionsLabel.attributedText = NSAttributedString(string: suggestionText,
+                                                                  attributes: self.placeholderAttributes)
+    }
     
     // MARK: Private
     
@@ -85,83 +113,40 @@ class ViewController: UIViewController {
         let phone = suggestionsHandler.phones[index]
         suggestionsTextField.text = phone.name
     }
-    
-    fileprivate func filterSuggestions(_ completion: @escaping () -> Void) {
-        suggestionsHandler.suggestionsTextFieldDidChangeText(textField: suggestionsTextField, completion: {
-            var suggestionText = ""
-            if let phone = self.suggestionsHandler.phones.first,
-                let text = self.suggestionsTextField.text, phone.name.hasPrefix(text) {
-                let substringIndex = phone.name.characters.index(phone.name.startIndex,
-                                                                 offsetBy: text.characters.count)
-                suggestionText = String(phone.name[substringIndex..<phone.name.endIndex])
-                
-            }
-            self.suggestionsLabel.attributedText = NSAttributedString(string: suggestionText,
-                attributes: self.placeholderAttributes)
-            
-            completion()
-        })
-    }
 }
 
 extension ViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        suggestionsTextField.resignFirstResponder()
         selectPhone(atIndex: indexPath.row)
-        
-        filterSuggestions { 
-            tableView.reloadData()
-        }
-    }
-}
-
-extension ViewController : SuggestionsTextFieldConfigurationDelegate {
-    func suggestionsTextField(textField: TextField,
-                              proposedContentViewTraits contentViewTraits: ContentViewTraits,
-                              keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits) {
-        if suggestionsTableView.isHidden {
-            suggestionsTableView.isHidden = false
-        }
-        
-        var contentViewFrame = contentViewTraits.frame
-        contentViewFrame.size.height = keyboardAnimationTraits.frame.minY - self.suggestionsTextField.frame.maxY
-        
-        var hiddenContentViewFrame = contentViewFrame
-        hiddenContentViewFrame.size.height = 0
-        
-        suggestionsTableView.frame = hiddenContentViewFrame
-        UIView.animate(withDuration: keyboardAnimationTraits.duration, delay: 0, options: keyboardAnimationTraits.curve,
-                       animations: {
-            self.suggestionsTableView.frame = contentViewFrame
-        }, completion: nil)
-    }
-    
-    func suggestionsTextField(textField: TextField,
-                              keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits) {
-        var hiddenContentViewFrame = suggestionsTableView.frame
-        hiddenContentViewFrame.size.height = 0
-        
-        UIView.animate(withDuration: keyboardAnimationTraits.duration, delay: 0,options: keyboardAnimationTraits.curve,
-                       animations: {
-            textField.suggestionsContentView?.frame = hiddenContentViewFrame
-        }) { (finished) in
-            if keyboardAnimationTraits.isKeyboardHidden {
-                textField.hideSuggestionsContentView()
-            }
-        }
-    }
-    
-    func suggestionsTextFieldDidChangeText(textField: TextField, completion: @escaping () -> Void) {
-        filterSuggestions(completion)
+        suggestionsTextField.resignFirstResponder()
     }
 }
 
 extension ViewController : UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if let text = textField.text, text.characters.count > 0 {
+        if let text = textField.text, text.count > 0 {
             selectPhone(atIndex: 0)
+        }
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text, text.count > 0 {
+            selectPhone(atIndex: 0)
+        }
+    }
+}
+
+class TableView: UITableView {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let isPointInside = super.point(inside: point, with: event)
+
+        if isPointInside {
+            for cell in visibleCells where cell.frame.contains(point) {
+                return true
+            }
         }
         return false
     }

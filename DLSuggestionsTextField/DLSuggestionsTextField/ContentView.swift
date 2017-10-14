@@ -9,8 +9,6 @@
 import UIKit
 
 @objc public protocol ContentView: class {
-    var contentSize: CGSize { get set }
-
     func reloadData()
 }
 

@@ -9,16 +9,45 @@
 import UIKit
 import DLSuggestionsTextField
 
+protocol PhonesSuggestionsHandlerObserver: class {
+    func handlerDidUpdatePhones(handler: PhonesSuggestionsHandler)
+}
+
 class PhonesSuggestionsHandler: NSObject {
     let storage = Storage()
+
+    weak var observer: PhonesSuggestionsHandlerObserver?
     
-    fileprivate (set) var phones: [Phone] = []
+    fileprivate (set) var phones: [Phone] = [] {
+        didSet {
+            observer?.handlerDidUpdatePhones(handler: self)
+        }
+    }
     
     static let kTableViewCellReuseIdentifier = "\(String(describing: PhonesSuggestionsHandler.self)).\(String(describing: UITableViewCell.self))"
     
     override init() {
         phones = storage.phones
         super.init()
+    }
+
+    @objc func textFieldDidChangeText(_ notification: Notification) {
+        guard let textField = notification.object as? TextField else { return }
+
+        updatePhoneFor(textField)
+    }
+
+    func updatePhoneFor(_ textField: TextField) {
+        if let text = textField.text, text.characters.count > 0 {
+            phones = storage.phones.filter({ (phone) -> Bool in
+                let yearString = "\(phone.year)"
+                return (phone.name.contains(text) ||
+                    phone.lastestSupportedOS.name.contains(text) ||
+                    yearString.hasPrefix(text))
+            })
+        } else {
+            phones = storage.phones
+        }
     }
 }
 
@@ -38,22 +67,5 @@ extension PhonesSuggestionsHandler : UITableViewDataSource {
         cell?.detailTextLabel?.text = "\(phone.lastestSupportedOS.name) - \(phone.year)"
         
         return cell!
-    }
-}
-
-extension PhonesSuggestionsHandler : SuggestionsTextFieldConfigurationDelegate {
-    func suggestionsTextFieldDidChangeText(textField: TextField, completion: @escaping () -> Void) {
-        if let text = textField.text, text.characters.count > 0 {
-            phones = storage.phones.filter({ (phone) -> Bool in
-                let yearString = "\(phone.year)"
-                return (phone.name.contains(text) ||
-                        phone.lastestSupportedOS.name.contains(text) ||
-                        yearString.hasPrefix(text))
-            })
-        } else {
-            phones = storage.phones
-        }
-        
-        completion()
     }
 }

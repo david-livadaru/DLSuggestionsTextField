@@ -68,12 +68,6 @@ open class LayoutController {
                                                                 requiredTextRect: requiredTextRect)
         }
 
-        if textField.containsText {
-            textField.showSuggestionTextView()
-        } else {
-            textField.hideSuggestionTextView()
-        }
-
         if let suggestionTextView = textField.suggestionLabel,
             textField.containsText && suggestionTextView.frame.width != 0 {
             textRect.size.width -= textField.minSuggestionTextWidth + textField.suggestionTextSpacing
@@ -121,7 +115,6 @@ open class LayoutController {
 
     open func suggestionsContentViewFrame() -> CGRect {
         guard let superView = textField.superview else { return CGRect.zero }
-        guard let contentView = textField.suggestionsContentView else { return CGRect.zero }
 
         let selfWindowFrame = superView.convert(textField.frame, to: nil)
 
@@ -130,11 +123,8 @@ open class LayoutController {
         contentViewFrame.origin.y = selfWindowFrame.maxY
         contentViewFrame.size.width = selfWindowFrame.width
 
-        var currentContentViewHeight = CGFloat.greatestFiniteMagnitude
-        contentView.layoutIfNeeded()
-        currentContentViewHeight = contentView.contentSize.height
         let availableHeight = max(0, keyboardFrame.minY - selfWindowFrame.maxY)
-        contentViewFrame.size.height = min(currentContentViewHeight, availableHeight)
+        contentViewFrame.size.height = availableHeight
 
         return contentViewFrame
     }

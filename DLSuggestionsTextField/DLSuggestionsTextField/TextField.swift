@@ -8,79 +8,16 @@
 
 import UIKit
 
-// MARK: - SuggestionsTextFieldConfigurationDelegate
-@objc public protocol SuggestionsTextFieldConfigurationDelegate: class {
-    /**
-     Customization point after textField started editing.
-     At this point, the suggestions content view should pe prepared for display and
-     added to the view hierarchy if addContentViewOnWindow is set to false.
-     
-     - parameter textField:         textField which called the delegate.
-     - parameter contentViewTraits: proposed content view traits.
-     */
-    @objc optional func suggestionsTextField(textField: TextField,
-                                             proposedContentViewTraits contentViewTraits: ContentViewTraits) -> CGRect
-    /**
-     Customization point before keyboard will show.
-     View hierarchy needs to redo layout in order to adjust content shown to user
-     to fit with the present keyboard.
-     
-     - parameter textField:               textField which called the delegate.
-     - parameter contentViewTraits:       proposed content view traits.
-     - parameter keyboardAnimationTraits: keyboard animation data.
-     */
-    @objc optional func suggestionsTextField(textField: TextField,
-                                       proposedContentViewTraits contentViewTraits: ContentViewTraits,
-                                       keybordWillShowWith keyboardAnimationTraits: KeyboardAnimationTraits)
-
-    /**
-     Customization point before keyboard will hide.
-     View hierarchy needs to redo layout in order to adjust content shown to user
-     to fit with the keyboard dismissed.
-     
-     - parameter textField:               textField which called the delegate.
-     - parameter keyboardAnimationTraits: keyboard animation data.
-     */
-    @objc optional func suggestionsTextField(textField: TextField,
-                                       keybordWillHideWith keyboardAnimationTraits: KeyboardAnimationTraits)
-
-    /**
-     Customization point after textField ended editing.
-     This might be an event where the content view should be hidden.
-     At the end completion should called.
-     
-     - parameter textField:   textField which called the delegate.
-     - parameter completion:  closure which removes content view from view hierarchy.
-     */
-    @objc optional func suggestionsTextField(textField: TextField,
-                                       hideSuggestionsContentView contentView: ContentView?,
-                                       completion: () -> Void)
-    /**
-     Asks the delegate if forced layout can be done in order to compute proposed frame.
-     If the content view uses self-sizing cells the forced layout may become an expensive operation.
-     
-     - parameter textField:   textField which called the delegate.
-     
-     - returns: Returns false if layout should not be forced.
-     */
-    @objc optional func suggestionsTextFieldShouldPerformLayoutOnFrameComputationForContentView(textField: TextField) -> Bool
-    /**
-     Informs the delegate that text from textField did change.
-     At this point the data source of content view might be filetered,
-     suggestionTextView is updated with new text,
-     contentView's data is updated.
-     
-     - parameter textField:  textField which called the delegate.
-     - parameter completion: closure which reloads content of contentView.
-     */
-    @objc optional func suggestionsTextFieldDidChangeText(textField: TextField,
-                                                          completion: @escaping () -> Void)
-}
-
 // MARK: - SuggestionsTextField
 @IBDesignable open class TextField: UITextField {
     public typealias LabelViewType = UIView & LabelView
     public typealias ContentViewType = UIView & ContentView
+
+    open override var text: String? {
+        didSet {
+            NotificationCenter.default.post(name: .UITextFieldTextDidChange, object: self)
+        }
+    }
 
     /// Adjusts vertical text insets.
     @IBInspectable open var verticalTextInsets: CGPoint = CGPoint.zero {
@@ -120,21 +57,16 @@ import UIKit
                             bottom: verticalTextInsets.y, right: horizontalTextInsets.y)
     }
 
-    /// Delegate which is reponsible with content view management and configuration of SuggestionsTextField.
-    weak open var configurationDelegate: SuggestionsTextFieldConfigurationDelegate?
-
-    /// A boolean which indicates if content view should be added to the window. True by default.
-    open var addContentViewOnWindow = true
-
     /// The label which displays the proposed suggestion or the remaining text of suggestion.
     open var suggestionLabel: LabelViewType?
     /// Content view which displays the list of suggestions.
     open var suggestionsContentView: ContentViewType?
 
-    /// The view where content view will be placed. Default is the visible window.
+    /// The view where content view will be placed. If this property is nil, the visible window will be used.
     public private (set) var contentViewContainer: UIView?
 
     open var layoutController: LayoutController!
+    open var animationController: AnimationController!
 
     var containsText: Bool {
         guard let attributedText = attributedText else { return false }
@@ -155,10 +87,6 @@ import UIKit
         initializeView()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     /// Set a container view where the content view will be placed.
     ///
     /// - Parameter contentViewContainer: the container view.
@@ -166,20 +94,24 @@ import UIKit
         self.contentViewContainer = contentViewContainer
     }
 
-    /**
-     Adds content view on application window if addContentViewOnWindow is true.
-     */
-    open func showSuggestionsContentView() {
-        if addContentViewOnWindow, let window = UIApplication.shared.delegate?.window,
-            let contentView = suggestionsContentView {
-            window?.addSubview(contentView)
+    public func addLabelViewToViewHierarchy() {
+        if let textView = suggestionLabel {
+            addSubview(textView)
         }
     }
 
-    /**
-     Removes content view from view hierarchy.
-     */
-    open func hideSuggestionsContentView() {
+    public func removeLabelViewToViewHierarchy() {
+        suggestionLabel?.removeFromSuperview()
+    }
+
+    public func addContentViewToViewHierarchy() {
+        guard let contentView = suggestionsContentView else { return }
+
+        let container = contentViewContainer ?? UIApplication.shared.keyWindow
+        container?.addSubview(contentView)
+    }
+
+    public func removeContentViewToViewHierarchy() {
         suggestionsContentView?.removeFromSuperview()
     }
 
@@ -187,69 +119,38 @@ import UIKit
 
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
         let textRect = super.textRect(forBounds: bounds)
-        return layoutController.textRect(forBounds: textRect)
+        return layoutController?.textRect(forBounds: textRect) ?? textRect
     }
 
-    open override func editingRect(forBounds bounds: CGRect) -> CGRect {
+    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        let placeholderRect = super.placeholderRect(forBounds: bounds)
+        return layoutController?.editingRect(forBounds: placeholderRect) ?? placeholderRect
+    }
+
+    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
         let editingRect = super.editingRect(forBounds: bounds)
-        return layoutController.editingRect(forBounds: editingRect)
+        return layoutController?.editingRect(forBounds: editingRect) ?? editingRect
     }
 
-    // MARK: Notifications
-
-    @objc open func didBeginEditing() {
-        var frame = layoutController.suggestionsContentViewFrame()
-        let traits = ContentViewTraits(frame: frame)
-        frame.size.height = 0
-        if let delegateFrame = configurationDelegate?.suggestionsTextField?(textField: self,
-                                                                            proposedContentViewTraits: traits) {
-            suggestionsContentView?.frame = delegateFrame
-        }
-        showSuggestionsContentView()
+    override open func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
+        let clearButtonRect = super.clearButtonRect(forBounds: bounds)
+        return layoutController?.clearButtonRect(forBounds: clearButtonRect) ?? clearButtonRect
     }
 
-    @objc open func didEndEditing() {
-        hideSuggestionTextView()
-
-        configurationDelegate?.suggestionsTextField?(textField: self,
-                                                     hideSuggestionsContentView: suggestionsContentView) {
-            self.hideSuggestionsContentView()
-        }
+    override open func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        let leftViewRect = super.leftViewRect(forBounds: bounds)
+        return layoutController?.leftViewRect(forBounds: leftViewRect) ?? leftViewRect
     }
 
-    @objc open func didChangeText() {
-        configurationDelegate?.suggestionsTextFieldDidChangeText?(textField: self) {
-            self.suggestionsContentView?.reloadData()
-        }
-    }
-
-    // MARK: Framework interface
-
-    func showSuggestionTextView() {
-        if let textView = suggestionLabel {
-            addSubview(textView)
-        }
-    }
-
-    func hideSuggestionTextView() {
-        suggestionLabel?.removeFromSuperview()
+    override open func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        let rightViewRect = super.rightViewRect(forBounds: bounds)
+        return layoutController?.rightViewRect(forBounds: rightViewRect) ?? rightViewRect
     }
 
     // MARK: Private interface
 
     private func initializeView() {
-        registerToNotifications()
-
-        contentViewContainer = UIApplication.shared.keyWindow
         layoutController = LayoutController(textField: self)
-    }
-
-    private func registerToNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didBeginEditing),
-                                               name: .UITextFieldTextDidBeginEditing, object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(didEndEditing),
-                                               name: .UITextFieldTextDidEndEditing, object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeText),
-                                               name: .UITextFieldTextDidChange, object: self)
+        animationController = AnimationController(textField: self)
     }
 }
