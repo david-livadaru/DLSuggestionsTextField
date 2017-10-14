@@ -8,57 +8,81 @@
 
 import CoreGraphics
 
-public protocol RoundApplicable {
-    mutating func roundInPlace()
+public protocol CeilApplicable {
+    mutating func ceil()
+    func ceiling() -> Self
 }
 
-public protocol CeilApplicable {
-    mutating func ceilInPlace()
+extension CeilApplicable {
+    mutating public func ceil() {
+        self = ceiling()
+    }
 }
 
 public protocol FloorApplicable {
-    mutating func floorInPlace()
+    mutating func floor()
+    func floored() -> Self
+}
+
+extension FloorApplicable {
+    mutating public func floor() {
+        self = floored()
+    }
+}
+
+public protocol RoundApplicable {
+    mutating func round()
+    func rounded() -> Self
+}
+
+extension RoundApplicable {
+    mutating public func round() {
+        self = rounded()
+    }
 }
 
 extension CGRect: RoundApplicable, FloorApplicable, CeilApplicable {
-    mutating public func roundInPlace() {
-        self = CGRect(x: round(self.origin.x), y: round(origin.y), width: round(width), height: round(height))
+    public func ceiling() -> CGRect {
+        return CGRect(x: Darwin.ceil(self.origin.x), y: Darwin.ceil(origin.y),
+                      width: Darwin.ceil(width), height: Darwin.ceil(height))
     }
 
-    mutating public func floorInPlace() {
-        self = CGRect(x: floor(self.origin.x), y: floor(origin.y), width: floor(width), height: floor(height))
+    public func floored() -> CGRect {
+        return CGRect(x: Darwin.floor(self.origin.x), y: Darwin.floor(origin.y),
+                      width: Darwin.floor(width), height: Darwin.floor(height))
     }
 
-    mutating public func ceilInPlace() {
-        self = CGRect(x: ceil(self.origin.x), y: ceil(origin.y), width: ceil(width), height: ceil(height))
+    public func rounded() -> CGRect {
+        return CGRect(x: Darwin.round(self.origin.x), y: Darwin.round(origin.y),
+                      width: Darwin.round(width), height: Darwin.round(height))
     }
 }
 
 extension CGSize: RoundApplicable, FloorApplicable, CeilApplicable {
-    mutating public func roundInPlace() {
-        self = CGSize(width: round(width), height: round(height))
+    public func ceiling() -> CGSize {
+        return CGSize(width: Darwin.ceil(width), height: Darwin.ceil(height))
     }
 
-    mutating public func floorInPlace() {
-        self = CGSize(width: floor(width), height: floor(height))
+    public func floored() -> CGSize {
+        return CGSize(width: Darwin.floor(width), height: Darwin.floor(height))
     }
 
-    mutating public func ceilInPlace() {
-        self = CGSize(width: ceil(width), height: ceil(height))
+    public func rounded() -> CGSize {
+        return CGSize(width: Darwin.round(width), height: Darwin.round(height))
     }
 }
 
 extension CGPoint: RoundApplicable, FloorApplicable, CeilApplicable {
-    mutating public func roundInPlace() {
-        self = CGPoint(x: round(x), y: round(y))
+    public func ceiling() -> CGPoint {
+        return CGPoint(x: Darwin.ceil(x), y: Darwin.ceil(y))
     }
 
-    mutating public func floorInPlace() {
-        self = CGPoint(x: floor(x), y: floor(y))
+    public func floored() -> CGPoint {
+        return CGPoint(x: Darwin.floor(x), y: Darwin.floor(y))
     }
 
-    mutating public func ceilInPlace() {
-        self = CGPoint(x: ceil(x), y: ceil(y))
+    public func rounded() -> CGPoint {
+        return CGPoint(x: Darwin.round(x), y: Darwin.round(y))
     }
 }
 
@@ -67,7 +91,17 @@ extension CGRect {
         insetBy(dx: point.x, dy: point.y)
     }
 
+    public func insetedBy(point: CGPoint) -> CGRect {
+        var rect = self
+        rect.insetBy(point: point)
+        return rect
+    }
+
     mutating public func insetUsing(insets: UIEdgeInsets) {
-        self = UIEdgeInsetsInsetRect(self, insets)
+        self = insetedUsing(insets: insets)
+    }
+
+    public func insetedUsing(insets: UIEdgeInsets) -> CGRect {
+        return UIEdgeInsetsInsetRect(self, insets)
     }
 }

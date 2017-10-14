@@ -1,5 +1,5 @@
 //
-//  TextView.swift
+//  LabelView.swift
 //  DLSuggestionsTextField
 //
 //  Created by David Livadaru on 08/07/16.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-public protocol TextView: class {
+public protocol LabelView: class {
     var attributedText: NSAttributedString? { get set }
 }
 
-extension UILabel: TextView {}
+extension UILabel: LabelView {}

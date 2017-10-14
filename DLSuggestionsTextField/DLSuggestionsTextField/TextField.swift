@@ -79,8 +79,9 @@ import UIKit
 
 // MARK: - SuggestionsTextField
 @IBDesignable open class TextField: UITextField {
-    public typealias TextViewType = UIView & TextView
+    public typealias LabelViewType = UIView & LabelView
     public typealias ContentViewType = UIView & ContentView
+
     /// Adjusts vertical text insets.
     @IBInspectable open var verticalTextInsets: CGPoint = CGPoint.zero {
         didSet {
@@ -94,35 +95,24 @@ import UIKit
         }
     }
 
-    /// Delegate which is reponsible with content view management and configuration of SuggestionsTextField.
-    weak open var configurationDelegate: SuggestionsTextFieldConfigurationDelegate?
-
     /// The minimum width required for suggestion text in order to be legible. Default is 24 points.
-    open var minSuggestionTextWidth: CGFloat = 24 {
+    @IBInspectable open var minSuggestionTextWidth: CGFloat = 24 {
         didSet {
             setNeedsLayout()
         }
     }
     /// The space between typing text and suggestion text
-    open var suggestionTextSpacing: CGFloat = 0 {
+    @IBInspectable open var suggestionTextSpacing: CGFloat = 0 {
         didSet {
             setNeedsLayout()
         }
     }
     /// the minimum width required for text to be visible. Default is 10 points.
-    open var minEditingTextWidth: CGFloat = 10 {
+    @IBInspectable open var minEditingTextWidth: CGFloat = 10 {
         didSet {
             setNeedsLayout()
         }
     }
-
-    /// A boolean which indicates if content view should be added to the window. True by default.
-    open var addContentViewOnWindow = true
-
-    /// Text view which might display proposed suggestion or the remaining text of suggestion.
-    open fileprivate (set) var suggestionTextView: TextViewType?
-    /// Content view which displays the list of suggestions.
-    open fileprivate (set) var suggestionsContentView: ContentViewType?
 
     /// Text insets created from vertical and horizontal insets.
     open var textInsets: UIEdgeInsets {
@@ -130,9 +120,23 @@ import UIKit
                             bottom: verticalTextInsets.y, right: horizontalTextInsets.y)
     }
 
-    fileprivate var keyboardFrame = CGRect.zero
+    /// Delegate which is reponsible with content view management and configuration of SuggestionsTextField.
+    weak open var configurationDelegate: SuggestionsTextFieldConfigurationDelegate?
 
-    fileprivate var containsText: Bool {
+    /// A boolean which indicates if content view should be added to the window. True by default.
+    open var addContentViewOnWindow = true
+
+    /// The label which displays the proposed suggestion or the remaining text of suggestion.
+    open var suggestionLabel: LabelViewType?
+    /// Content view which displays the list of suggestions.
+    open var suggestionsContentView: ContentViewType?
+
+    /// The view where content view will be placed. Default is the visible window.
+    public private (set) var contentViewContainer: UIView?
+
+    open var layoutController: LayoutController!
+
+    var containsText: Bool {
         guard let attributedText = attributedText else { return false }
         return attributedText.string.characters.count > 0
     }
@@ -142,33 +146,24 @@ import UIKit
     override public init(frame: CGRect) {
         super.init(frame: frame)
 
-        registerToNotifications()
+        initializeView()
     }
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        registerToNotifications()
+        initializeView()
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // MARK: Public Interface
-
-    /// Sets the view which will be used to display the selected suggestion.
+    /// Set a container view where the content view will be placed.
     ///
-    /// - Parameter textView: the view which is used.
-    open func setSuggestionTextView<TextView: TextView>(textView: TextView) where TextView: UIView {
-        suggestionTextView = textView
-    }
-
-    /// Sets the view which will be used to display the suggestions as a list.
-    ///
-    /// - Parameter contentView: the view which is used to display the list.
-    open func setSuggestionsContentView(contentView: ContentViewType) {
-        suggestionsContentView = contentView
+    /// - Parameter contentViewContainer: the container view.
+    public func setContentViewContainer(_ contentViewContainer: UIView) {
+        self.contentViewContainer = contentViewContainer
     }
 
     /**
@@ -188,97 +183,22 @@ import UIKit
         suggestionsContentView?.removeFromSuperview()
     }
 
-    // MARK: UITextField Layout
-
-    /**
-     Provides acces to frame returned by UITextField.
-     */
-    open func UITextFieldTextRectForBounds(_ bounds: CGRect) -> CGRect {
-        return super.textRect(forBounds: bounds)
-    }
-
-    /**
-     Provides acces to frame returned by UITextField.
-     */
-    open func UITextFieldEditingRectForBounds(_ bounds: CGRect) -> CGRect {
-        return super.editingRect(forBounds: bounds)
-    }
-
-    open func suggestionsTextViewFrame(availableTextRect: CGRect,
-                                       requiredTextRect: CGRect) -> CGRect {
-        var requiredLabelSize = suggestionTextView?.systemLayoutSizeFitting(availableTextRect.size) ?? CGSize.zero
-        requiredLabelSize.ceilInPlace()
-
-        let availableWidth = max(0, availableTextRect.width - requiredTextRect.width)
-
-        var labelWidth: CGFloat = 0
-        if let attributedText = suggestionTextView?.attributedText, attributedText.length > 0 {
-            labelWidth = max(minSuggestionTextWidth, availableWidth)
-        }
-
-        var labelFrame = CGRect.zero
-        labelFrame.origin.x = min(requiredTextRect.width, availableTextRect.width - labelWidth) + suggestionTextSpacing
-        labelFrame.origin.y = floor((bounds.height - requiredLabelSize.height) / 2)
-        labelFrame.size.width = labelWidth
-        labelFrame.size.height = requiredLabelSize.height
-
-        return labelFrame
-    }
-
     // MARK: Override
 
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
-        var textRect = super.textRect(forBounds: bounds)
-        textRect.insetUsing(insets: textInsets)
-
-        return textRect
+        let textRect = super.textRect(forBounds: bounds)
+        return layoutController.textRect(forBounds: textRect)
     }
 
     open override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        var availableTextRect = super.editingRect(forBounds: bounds)
-        availableTextRect.insetUsing(insets: textInsets)
-
-        var textRect = availableTextRect
-
-        var requiredTextRect = CGRect.zero
-        let boundingRect: CGRect?
-        if containsText {
-            boundingRect = attributedText?.boundingRect(with: availableTextRect.size, options: .usesLineFragmentOrigin,
-                                                        context: nil)
-        } else {
-            boundingRect = attributedPlaceholder?.boundingRect(with: availableTextRect.size,
-                                                               options: .usesLineFragmentOrigin, context: nil)
-        }
-        requiredTextRect = boundingRect ?? CGRect.zero
-        requiredTextRect.ceilInPlace()
-
-        if let text = text, text.characters.count > 0 {
-            // the offset is required due to the way text scroll from UITextField works
-            requiredTextRect.size.width += minEditingTextWidth
-        }
-
-        if let suggestionTextView = self.suggestionTextView, containsText {
-            suggestionTextView.frame = suggestionsTextViewFrame(availableTextRect: availableTextRect,
-                                                                requiredTextRect: requiredTextRect)
-        }
-
-        if containsText {
-            showSuggestionTextView()
-        } else {
-            hideSuggestionTextView()
-        }
-
-        if let suggestionTextView = self.suggestionTextView, containsText && suggestionTextView.frame.width != 0 {
-            textRect.size.width -= minSuggestionTextWidth + suggestionTextSpacing
-        }
-
-        return textRect
+        let editingRect = super.editingRect(forBounds: bounds)
+        return layoutController.editingRect(forBounds: editingRect)
     }
 
     // MARK: Notifications
 
-    @objc fileprivate func didBeginEditing() {
-        var frame = computeSuggestionsContentViewFrame()
+    @objc open func didBeginEditing() {
+        var frame = layoutController.suggestionsContentViewFrame()
         let traits = ContentViewTraits(frame: frame)
         frame.size.height = 0
         if let delegateFrame = configurationDelegate?.suggestionsTextField?(textField: self,
@@ -288,7 +208,7 @@ import UIKit
         showSuggestionsContentView()
     }
 
-    @objc fileprivate func didEndEditing() {
+    @objc open func didEndEditing() {
         hideSuggestionTextView()
 
         configurationDelegate?.suggestionsTextField?(textField: self,
@@ -297,77 +217,39 @@ import UIKit
         }
     }
 
-    @objc fileprivate func didChangeText() {
+    @objc open func didChangeText() {
         configurationDelegate?.suggestionsTextFieldDidChangeText?(textField: self) {
             self.suggestionsContentView?.reloadData()
         }
     }
 
-    @objc fileprivate func keyboardWillShow(_ notification: Notification) {
-        guard let traits = KeyboardAnimationTraits(notification: notification) else { return }
+    // MARK: Framework interface
 
-        keyboardFrame = traits.frame
-        let contentViewTraits = ContentViewTraits(frame: computeSuggestionsContentViewFrame())
-        configurationDelegate?.suggestionsTextField?(textField: self, proposedContentViewTraits: contentViewTraits,
-                                                     keybordWillShowWith: traits)
-    }
-
-    @objc fileprivate func keyboardWillHide(_ notification: Notification) {
-        guard let traits = KeyboardAnimationTraits(notification: notification) else { return }
-
-        keyboardFrame = traits.frame
-        configurationDelegate?.suggestionsTextField?(textField: self,
-                                                     keybordWillHideWith: traits)
-    }
-
-    // MARK: Private
-
-    fileprivate func registerToNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(TextField.didBeginEditing),
-                                                         name: NSNotification.Name.UITextFieldTextDidBeginEditing,
-                                                         object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(TextField.didEndEditing),
-                                                         name: NSNotification.Name.UITextFieldTextDidEndEditing,
-                                                         object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(TextField.didChangeText),
-                                                         name: NSNotification.Name.UITextFieldTextDidChange,
-                                                         object: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(TextField.keyboardWillShow(_:)),
-                                                         name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TextField.keyboardWillHide(_:)),
-                                                         name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-    }
-
-    fileprivate func computeSuggestionsContentViewFrame() -> CGRect {
-        var contentViewFrame = CGRect.zero
-
-        if let nonNilSuperView = self.superview {
-            let selfWindowFrame = nonNilSuperView.convert(frame, to: nil)
-
-            contentViewFrame.origin.x = selfWindowFrame.minX
-            contentViewFrame.origin.y = selfWindowFrame.maxY
-            contentViewFrame.size.width = selfWindowFrame.width
-
-            var currentContentViewHeight = CGFloat.greatestFiniteMagnitude
-            let canPerformLayout = configurationDelegate?.suggestionsTextFieldShouldPerformLayoutOnFrameComputationForContentView?(textField: self) ?? true
-            if canPerformLayout {
-                suggestionsContentView?.layoutIfNeeded()
-                currentContentViewHeight = suggestionsContentView?.contentSize.height ?? 0
-            }
-            let availableHeight = max(0, keyboardFrame.minY - selfWindowFrame.maxY)
-            contentViewFrame.size.height = min(currentContentViewHeight, availableHeight)
-        }
-
-        return contentViewFrame
-    }
-
-    fileprivate func showSuggestionTextView() {
-        if let textView = suggestionTextView {
+    func showSuggestionTextView() {
+        if let textView = suggestionLabel {
             addSubview(textView)
         }
     }
 
-    fileprivate func hideSuggestionTextView() {
-        suggestionTextView?.removeFromSuperview()
+    func hideSuggestionTextView() {
+        suggestionLabel?.removeFromSuperview()
+    }
+
+    // MARK: Private interface
+
+    private func initializeView() {
+        registerToNotifications()
+
+        contentViewContainer = UIApplication.shared.keyWindow
+        layoutController = LayoutController(textField: self)
+    }
+
+    private func registerToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didBeginEditing),
+                                               name: .UITextFieldTextDidBeginEditing, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEndEditing),
+                                               name: .UITextFieldTextDidEndEditing, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeText),
+                                               name: .UITextFieldTextDidChange, object: self)
     }
 }
