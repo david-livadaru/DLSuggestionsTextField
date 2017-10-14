@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "DLSuggestionsTextField"
-  s.version      = "1.0.0"
+  s.version      = "2.0.0"
   s.summary      = "DLSuggestionsTextField helps you create beautiful dynamic suggestions as user provides input in a text field."
 
   # This description is used to generate tags and improve search results.
