@@ -40,7 +40,7 @@ Add the the following dependecy in your `Package.swift`.
 
 ```
 dependencies: [
-    .Package(url: "https://github.com/davidlivadaru/DLSuggestionsTextField.git", .upToNextMinor(from: "2.0.0"))
+    .package(url: "https://github.com/davidlivadaru/DLSuggestionsTextField.git", .upToNextMinor(from: "2.0.0"))
 ]
 ```
 
