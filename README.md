@@ -31,7 +31,7 @@ github "davidlivadaru/DLSuggestionsTextField" ~> 2.0
 Add the the following dependecy in your `Podfile`.
 
 ```
-pod 'DLSuggestionsTextField' ~> 2.0
+pod 'DLSuggestionsTextField', '~> 2.0'
 ```
 
 ### Swift Package Manager
