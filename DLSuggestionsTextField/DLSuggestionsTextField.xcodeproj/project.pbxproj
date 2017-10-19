@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		630DC9C41D3013BC00F28B00 /* DLSuggestionsTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6350256B1F97E2F000D895AA /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635025651F97E2F000D895AA /* AnimationController.swift */; };
-		6350256C1F97E2F000D895AA /* CGGeometry+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635025661F97E2F000D895AA /* CGGeometry+Additions.swift */; };
-		6350256D1F97E2F000D895AA /* KeyboardAnimationTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635025671F97E2F000D895AA /* KeyboardAnimationTraits.swift */; };
-		6350256E1F97E2F000D895AA /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635025681F97E2F000D895AA /* LabelView.swift */; };
-		6350256F1F97E2F000D895AA /* LayoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635025691F97E2F000D895AA /* LayoutController.swift */; };
-		635025701F97E2F000D895AA /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6350256A1F97E2F000D895AA /* TextField.swift */; };
+		6344F0851F9939AF00255046 /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6344F07F1F9939AF00255046 /* LabelView.swift */; };
+		6344F0861F9939AF00255046 /* CGGeometry+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6344F0801F9939AF00255046 /* CGGeometry+Additions.swift */; };
+		6344F0871F9939AF00255046 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6344F0811F9939AF00255046 /* AnimationController.swift */; };
+		6344F0881F9939AF00255046 /* LayoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6344F0821F9939AF00255046 /* LayoutController.swift */; };
+		6344F0891F9939AF00255046 /* KeyboardAnimationTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6344F0831F9939AF00255046 /* KeyboardAnimationTraits.swift */; };
+		6344F08A1F9939AF00255046 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6344F0841F9939AF00255046 /* TextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		630DC9C01D3013BC00F28B00 /* DLSuggestionsTextField.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLSuggestionsTextField.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630DC9C31D3013BC00F28B00 /* DLSuggestionsTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLSuggestionsTextField.h; sourceTree = "<group>"; };
 		630DC9C51D3013BC00F28B00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		635025651F97E2F000D895AA /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
-		635025661F97E2F000D895AA /* CGGeometry+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGGeometry+Additions.swift"; sourceTree = "<group>"; };
-		635025671F97E2F000D895AA /* KeyboardAnimationTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAnimationTraits.swift; sourceTree = "<group>"; };
-		635025681F97E2F000D895AA /* LabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
-		635025691F97E2F000D895AA /* LayoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutController.swift; sourceTree = "<group>"; };
-		6350256A1F97E2F000D895AA /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		6344F07F1F9939AF00255046 /* LabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
+		6344F0801F9939AF00255046 /* CGGeometry+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGGeometry+Additions.swift"; sourceTree = "<group>"; };
+		6344F0811F9939AF00255046 /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
+		6344F0821F9939AF00255046 /* LayoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutController.swift; sourceTree = "<group>"; };
+		6344F0831F9939AF00255046 /* KeyboardAnimationTraits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAnimationTraits.swift; sourceTree = "<group>"; };
+		6344F0841F9939AF00255046 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,23 +68,15 @@
 		635025631F97E2F000D895AA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				635025641F97E2F000D895AA /* DLSuggestionsTextField */,
+				6344F0811F9939AF00255046 /* AnimationController.swift */,
+				6344F0801F9939AF00255046 /* CGGeometry+Additions.swift */,
+				6344F0831F9939AF00255046 /* KeyboardAnimationTraits.swift */,
+				6344F07F1F9939AF00255046 /* LabelView.swift */,
+				6344F0821F9939AF00255046 /* LayoutController.swift */,
+				6344F0841F9939AF00255046 /* TextField.swift */,
 			);
 			name = Sources;
 			path = ../../Sources;
-			sourceTree = "<group>";
-		};
-		635025641F97E2F000D895AA /* DLSuggestionsTextField */ = {
-			isa = PBXGroup;
-			children = (
-				635025651F97E2F000D895AA /* AnimationController.swift */,
-				635025661F97E2F000D895AA /* CGGeometry+Additions.swift */,
-				635025671F97E2F000D895AA /* KeyboardAnimationTraits.swift */,
-				635025681F97E2F000D895AA /* LabelView.swift */,
-				635025691F97E2F000D895AA /* LayoutController.swift */,
-				6350256A1F97E2F000D895AA /* TextField.swift */,
-			);
-			path = DLSuggestionsTextField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,12 +175,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6350256F1F97E2F000D895AA /* LayoutController.swift in Sources */,
-				635025701F97E2F000D895AA /* TextField.swift in Sources */,
-				6350256B1F97E2F000D895AA /* AnimationController.swift in Sources */,
-				6350256D1F97E2F000D895AA /* KeyboardAnimationTraits.swift in Sources */,
-				6350256C1F97E2F000D895AA /* CGGeometry+Additions.swift in Sources */,
-				6350256E1F97E2F000D895AA /* LabelView.swift in Sources */,
+				6344F0871F9939AF00255046 /* AnimationController.swift in Sources */,
+				6344F0851F9939AF00255046 /* LabelView.swift in Sources */,
+				6344F0861F9939AF00255046 /* CGGeometry+Additions.swift in Sources */,
+				6344F08A1F9939AF00255046 /* TextField.swift in Sources */,
+				6344F0881F9939AF00255046 /* LayoutController.swift in Sources */,
+				6344F0891F9939AF00255046 /* KeyboardAnimationTraits.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
