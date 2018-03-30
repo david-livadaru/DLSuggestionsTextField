@@ -3,7 +3,7 @@
 
 ## Why another framework for suggestions / autocomplete?
 
-Even if there are some frameworks which provide this facility, each of them have various flaws or limitations. The purpose of this framework is to provide its client full control.
+Even if there are some frameworks which provide autocomplete convenience, each of them have various flaws or limitations. The purpose of this framework is to provide its client full control.
 
 ## Releases
 
